@@ -17,7 +17,6 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:application",
                     "options": {
-                        "baseHref": "/hms/" ,
                         "outputPath": "dist/docs",
                         "index": "src/index.html",
                         "browser": "src/main.ts",
@@ -86,11 +85,8 @@
                         "tsConfig": "tsconfig.spec.json",
                         "inlineStyleLanguage": "scss",
                         "assets": [
-                            {
-                                "glob": "**/*",
-                                "input": "public"
-                            }
-                        ],
+  { "glob": "**/*", "input": "src/assets", "output": "assets" }
+],
                         "styles": [
                             "src/styles.scss"
                         ],
