@@ -44,7 +44,7 @@ import { ButtonModule } from 'primeng/button';
                         <span>Features</span>
                     </a>
                 </li>
-                <li>
+                <!-- <li>
                     <a (click)="router.navigate(['/landing'], { fragment: 'highlights' })" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
                         <span>Highlights</span>
                     </a>
@@ -53,7 +53,7 @@ import { ButtonModule } from 'primeng/button';
                     <a (click)="router.navigate(['/landing'], { fragment: 'pricing' })" pRipple class="px-0 py-4 text-surface-900 dark:text-surface-0 font-medium text-xl">
                         <span>Pricing</span>
                     </a>
-                </li>
+                </li> -->
             </ul>
             <div class="flex border-t lg:border-t-0 border-surface py-4 lg:py-0 mt-4 lg:mt-0 gap-2">
                 <button pButton pRipple label="Login" routerLink="/auth/login" [rounded]="true" [text]="true"></button>

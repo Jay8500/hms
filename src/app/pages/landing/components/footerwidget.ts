@@ -41,7 +41,7 @@ import { Router, RouterModule } from '@angular/router';
                             <a class="leading-normal text-xl block cursor-pointer text-surface-700 dark:text-surface-100">Media Kit</a>
                         </div>
 
-                        <div class="col-span-12 md:col-span-3">
+                        <!-- <div class="col-span-12 md:col-span-3">
                             <h4 class="font-medium text-2xl leading-normal mb-6 text-surface-900 dark:text-surface-0">Resources</h4>
                             <a class="leading-normal text-xl block cursor-pointer mb-2 text-surface-700 dark:text-surface-100">Get Started</a>
                             <a class="leading-normal text-xl block cursor-pointer mb-2 text-surface-700 dark:text-surface-100">Learn</a>
@@ -61,7 +61,7 @@ import { Router, RouterModule } from '@angular/router';
                             <a class="leading-normal text-xl block cursor-pointer mb-2 text-surface-700 dark:text-surface-100">Brand Policy</a>
                             <a class="leading-normal text-xl block cursor-pointer mb-2 text-surface-700 dark:text-surface-100">Privacy Policy</a>
                             <a class="leading-normal text-xl block cursor-pointer text-surface-700 dark:text-surface-100">Terms of Service</a>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
