@@ -4,8 +4,8 @@ import { Component } from '@angular/core';
     standalone: true,
     selector: 'app-footer',
     template: `<div class="layout-footer">
-        HMS by
-        <a href="javascript:none" class="text-primary font-bold hover:underline">JAYA KRISHNA</a>
+        HMS 
+        <!-- <a href="javascript:none" class="text-primary font-bold hover:underline"></a> -->
     </div>`
 })
 export class AppFooter {}

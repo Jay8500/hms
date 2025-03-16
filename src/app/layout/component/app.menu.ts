@@ -28,14 +28,17 @@ export class AppMenu {
                 label: 'Modules',
                 items: [
                     // { label: 'Employees', icon: 'pi pi-fw pi-id-card', routerLink: ['/home/uikit/formlayout'] },
-                    
-                    { label: 'Admissions', icon: 'pi pi-fw pi-tablet', routerLink: ['/home/uikit/formlayout'] },
-                    { label: 'Doctors', icon: 'pi pi-fw pi-check-square', routerLink: ['/home/uikit/input'] },
-                    { label: 'Patients', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon', routerLink: ['/home/uikit/button'] },
-                    { label: 'Scheduling', icon: 'pi pi-fw pi-calendar', class: 'rotated-icon', routerLink: ['/home/uikit/button'] },
-                    { label: 'Inventory', icon: 'pi pi-fw pi-table', routerLink: ['/home/uikit/table'] },
-                    { label: 'Billings', icon: 'pi pi-fw pi-list', routerLink: ['/home/uikit/list'] },
-                    { label: 'Settings', icon: 'pi pi-fw pi-clone', routerLink: ['/home/uikit/formlayout'] },
+
+                    { label: 'Registration', icon: 'pi pi-fw pi-pen-to-square', routerLink: ['/home/uikit/registration'] },
+                    { label: 'IP Admissions', icon: 'pi pi-fw pi-list', routerLink: ['/home/uikit/ip-admissions'] },
+                    { label: 'Doctors', icon: 'pi pi-fw pi-table', routerLink: ['/home/uikit/doctorslist'] },
+                    // { label: 'Patients', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon', routerLink: ['/home/uikit/button'] },
+                    // { label: 'Scheduling', icon: 'pi pi-fw pi-calendar', class: 'rotated-icon', routerLink: ['/home/uikit/button'] },
+                    // { label: 'Inventory', icon: 'pi pi-fw pi-table', routerLink: ['/home/uikit/table'] },
+                    // { label: 'Billings', icon: 'pi pi-fw pi-list', routerLink: ['/home/uikit/list'] },
+                    // { label: 'Settings', icon: 'pi pi-fw pi-clone', routerLink: ['/home/uikit/formlayout'] },
+
+
                     // { label: 'Tree', icon: 'pi pi-fw pi-share-alt', routerLink: ['/uikit/tree'] },
                     // { label: 'Panel', icon: 'pi pi-fw pi-tablet', routerLink: ['/uikit/panel'] },
                     // { label: 'Overlay', icon: 'pi pi-fw pi-clone', routerLink: ['/uikit/overlay'] },

@@ -64,6 +64,7 @@ import { CommonModule } from '@angular/common';
                 <span class="text-primary font-medium">85 </span>
                 <span class="text-muted-color">responded</span>
             </div>
-        </div>`
+        </div>
+        `
 })
 export class StatsWidget {}

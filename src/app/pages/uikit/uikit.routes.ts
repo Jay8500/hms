@@ -16,12 +16,13 @@ import { TreeDemo } from './treedemo';
 import { MenuDemo } from './menudemo';
 
 export default [
+    { path: 'registration', data: { breadcrumb: 'Form Layout' }, component: FormLayoutDemo },
+    { path: 'ip-admissions', data: { breadcrumb: 'Input' }, component: InputDemo },
+    { path: 'doctorslist', data: { breadcrumb: 'List' }, component: ListDemo },
+
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
     { path: 'file', data: { breadcrumb: 'File' }, component: FileDemo },
-    { path: 'formlayout', data: { breadcrumb: 'Form Layout' }, component: FormLayoutDemo },
-    { path: 'input', data: { breadcrumb: 'Input' }, component: InputDemo },
-    { path: 'list', data: { breadcrumb: 'List' }, component: ListDemo },
     { path: 'media', data: { breadcrumb: 'Media' }, component: MediaDemo },
     { path: 'message', data: { breadcrumb: 'Message' }, component: MessagesDemo },
     { path: 'misc', data: { breadcrumb: 'Misc' }, component: MiscDemo },

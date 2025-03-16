@@ -1,15 +1,16 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router'; 
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 // import { AppConfigurator } from './app.configurator';
 import { LayoutService } from '../service/layout.service';
+import { Menu } from 'primeng/menu';
 // AppConfigurator
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule ],
+    imports: [CommonModule, StyleClassModule, Menu],
     template: ` <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
@@ -38,22 +39,22 @@ import { LayoutService } from '../service/layout.service';
         </div>
 
         <div class="layout-topbar-actions">
-            <div class="layout-config-menu">
+            <!-- <div class="layout-config-menu">
                 <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
                     <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
                 </button>
              
-            </div>
+            </div> -->
 
-            <button class="layout-topbar-menu-button layout-topbar-action" pStyleClass="@next" enterFromClass="hidden" enterActiveClass="animate-scalein" leaveToClass="hidden" leaveActiveClass="animate-fadeout" [hideOnOutsideClick]="true">
+            <!-- <button class="layout-topbar-menu-button layout-topbar-action" pStyleClass="@next" 
+            enterFromClass="hidden" enterActiveClass="animate-scalein" leaveToClass="hidden" 
+            leaveActiveClass="animate-fadeout" [hideOnOutsideClick]="true">
                 <i class="pi pi-ellipsis-v"></i>
-            </button>
-
+            </button> -->
+            <p-menu #menu [model]="itemss" [popup]="true" />
             <div class="layout-topbar-menu hidden lg:block">
                 <div class="layout-topbar-menu-content">
-                   
-                  
-                    <button type="button" class="layout-topbar-action">
+                    <button type="button" class="layout-topbar-action" (click)="menu.toggle($event)">
                         <i class="pi pi-user"></i>
                         <span>Profile</span>
                     </button>
@@ -64,8 +65,25 @@ import { LayoutService } from '../service/layout.service';
 })
 export class AppTopbar {
     items!: MenuItem[];
-
-    constructor(public layoutService: LayoutService) {}
+    itemss: MenuItem[] | undefined;
+    constructor(public layoutService: LayoutService, public _router: Router) {
+        this.itemss = [
+            {
+                label: 'Profile Options',
+                items: [
+                    {
+                        label: 'Settings',
+                        icon: 'pi pi-cog'
+                    },
+                    {
+                        label: 'Sigout',
+                        icon: 'pi pi-sign-out',
+                        command: () => this._router.navigateByUrl('/auth/login')
+                    }
+                ]
+            }
+        ]
+    }
 
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));

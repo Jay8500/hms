@@ -15,7 +15,7 @@ import { Product, ProductService } from '../service/product.service';
     imports: [CommonModule, DataViewModule, FormsModule, SelectButtonModule, PickListModule, OrderListModule, TagModule, ButtonModule],
     template: ` <div class="flex flex-col">
         <div class="card">
-            <div class="font-semibold text-xl">DataView</div>
+            <div class="font-semibold text-xl">Doctors View</div>
             <p-dataview [value]="products" [layout]="layout">
                 <ng-template #header>
                     <div class="flex justify-end">
@@ -32,7 +32,7 @@ import { Product, ProductService } from '../service/product.service';
                         <div *ngFor="let item of items; let i = index">
                             <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4" [ngClass]="{ 'border-t border-surface': i !== 0 }">
                                 <div class="md:w-40 relative">
-                                    <img class="block xl:block mx-auto rounded w-full" src="https://primefaces.org/cdn/primevue/images/product/{{ item.image }}" [alt]="item.name" />
+                                    <img class="block xl:block mx-auto rounded w-full" src="assets/doctorsimg/tow.jfif" [alt]="item.name" />
                                     <div class="absolute bg-black/70 rounded-border" [style]="{ left: '4px', top: '4px' }">
                                         <p-tag [value]="item.inventoryStatus" [severity]="getSeverity(item)"></p-tag>
                                     </div>
@@ -59,10 +59,10 @@ import { Product, ProductService } from '../service/product.service';
                                         </div>
                                     </div>
                                     <div class="flex flex-col md:items-end gap-8">
-                                        <span class="text-xl font-semibold">$ {{ item.price }}</span>
+                                        <!-- <span class="text-xl font-semibold">$ {{ item.price }}</span> -->
                                         <div class="flex flex-row-reverse md:flex-row gap-2">
                                             <p-button icon="pi pi-heart" styleClass="h-full" [outlined]="true"></p-button>
-                                            <p-button icon="pi pi-shopping-cart" label="Buy Now" [disabled]="item.inventoryStatus === 'OUTOFSTOCK'" styleClass="flex-auto md:flex-initial whitespace-nowrap"></p-button>
+                                            <p-button icon="pi pi-shopping-cart" label="Appointments" [disabled]="item.inventoryStatus === 'OUTOFSTOCK'" styleClass="flex-auto md:flex-initial whitespace-nowrap"></p-button>
                                         </div>
                                     </div>
                                 </div>
@@ -105,9 +105,9 @@ import { Product, ProductService } from '../service/product.service';
                                         </div>
                                     </div>
                                     <div class="flex flex-col gap-6 mt-6">
-                                        <span class="text-2xl font-semibold">$ {{ item.price }}</span>
+                                        <!-- <span class="text-2xl font-semibold">$ {{ item.price }}</span> -->
                                         <div class="flex gap-2">
-                                            <p-button icon="pi pi-shopping-cart" label="Buy Now" [disabled]="item.inventoryStatus === 'OUTOFSTOCK'" class="flex-auto whitespace-nowrap" styleClass="w-full"></p-button>
+                                            <p-button icon="pi pi-shopping-cart" label="Appointments" [disabled]="item.inventoryStatus === 'OUTOFSTOCK'" class="flex-auto whitespace-nowrap" styleClass="w-full"></p-button>
                                             <p-button icon="pi pi-heart" styleClass="h-full" [outlined]="true"></p-button>
                                         </div>
                                     </div>
@@ -119,8 +119,8 @@ import { Product, ProductService } from '../service/product.service';
             </p-dataview>
         </div>
 
-        <div class="flex flex-col lg:flex-row gap-20">
-            <div class="lg:w-2/3">
+        <!-- <div class="flex flex-col lg:flex-row gap-20"> -->
+            <!-- <div class="lg:w-2/3">
                 <div class="card">
                     <div class="font-semibold text-xl mb-4">PickList</div>
                     <p-pick-list [source]="sourceCities" [target]="targetCities" breakpoint="1400px">
@@ -129,9 +129,9 @@ import { Product, ProductService } from '../service/product.service';
                         </ng-template>
                     </p-pick-list>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="lg:w-1/3">
+            <!-- <div class="lg:w-1/3">
                 <div class="card">
                     <div class="font-semibold text-xl mb-4">OrderList</div>
                     <p-orderlist [value]="orderCities" dataKey="id" breakpoint="575px">
@@ -140,8 +140,8 @@ import { Product, ProductService } from '../service/product.service';
                         </ng-template>
                     </p-orderlist>
                 </div>
-            </div>
-        </div>
+            </div> -->
+        <!-- </div> -->
     </div>`,
     styles: `
         ::ng-deep {
@@ -195,17 +195,17 @@ export class ListDemo {
 
     getSeverity(product: Product) {
         switch (product.inventoryStatus) {
-            case 'INSTOCK':
+            case 'Care':
                 return 'success';
 
-            case 'LOWSTOCK':
+            case 'Leave':
                 return 'warn';
 
-            case 'OUTOFSTOCK':
+            case 'Rounds':
                 return 'danger';
 
             default:
-                return 'info';
+                return 'success';
         }
     }
 }

@@ -3,11 +3,11 @@ import { NotificationsWidget } from './components/notificationswidget';
 import { StatsWidget } from './components/statswidget';
 import { RecentSalesWidget } from './components/recentsaleswidget';
 import { BestSellingWidget } from './components/bestsellingwidget';
-import { RevenueStreamWidget } from './components/revenuestreamwidget';
+// import { RevenueStreamWidget } from './components/revenuestreamwidget';
 
 @Component({
     selector: 'app-dashboard',
-    imports: [StatsWidget, RecentSalesWidget, BestSellingWidget, RevenueStreamWidget, NotificationsWidget],
+    imports: [StatsWidget, RecentSalesWidget, BestSellingWidget, NotificationsWidget],
     template: `
         <div class="grid grid-cols-12 gap-8">
             <app-stats-widget class="contents" />
@@ -16,7 +16,7 @@ import { RevenueStreamWidget } from './components/revenuestreamwidget';
                 <app-best-selling-widget />
             </div>
             <div class="col-span-12 xl:col-span-6">
-                <app-revenue-stream-widget />
+                <!-- <app-revenue-stream-widget /> -->
                 <app-notifications-widget />
             </div>
         </div>
