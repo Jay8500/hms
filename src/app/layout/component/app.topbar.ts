@@ -76,7 +76,7 @@ export class AppTopbar {
                         icon: 'pi pi-cog'
                     },
                     {
-                        label: 'Sigout',
+                        label: 'Signout',
                         icon: 'pi pi-sign-out',
                         command: () => this._router.navigateByUrl('/auth/login')
                     }

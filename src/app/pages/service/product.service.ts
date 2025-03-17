@@ -26,8 +26,8 @@ export class ProductService {
             {
                 id: '1000',
                 code: 'f230fh0g3',
-                name: 'Dr. Jaya Krishna Lakkoju',
-                description: 'Consultant Neurologist',
+                name: 'Dr. Jay',
+                description: 'Neurologist',
                 image: 'bamboo-watch.jpg',
                 price: 65,
                 category: '6 Years Experience',

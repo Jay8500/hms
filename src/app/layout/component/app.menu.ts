@@ -29,8 +29,8 @@ export class AppMenu {
                 items: [
                     // { label: 'Employees', icon: 'pi pi-fw pi-id-card', routerLink: ['/home/uikit/formlayout'] },
 
-                    { label: 'Registration', icon: 'pi pi-fw pi-pen-to-square', routerLink: ['/home/uikit/registration'] },
-                    { label: 'IP Admissions', icon: 'pi pi-fw pi-list', routerLink: ['/home/uikit/ip-admissions'] },
+                    { label: 'Registration OP/ IP', icon: 'pi pi-fw pi-pen-to-square', routerLink: ['/home/uikit/registration'] },
+                    // { label: 'IP Admissions', icon: 'pi pi-fw pi-list', routerLink: ['/home/uikit/ip-admissions'] },
                     { label: 'Doctors', icon: 'pi pi-fw pi-table', routerLink: ['/home/uikit/doctorslist'] },
                     // { label: 'Patients', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon', routerLink: ['/home/uikit/button'] },
                     // { label: 'Scheduling', icon: 'pi pi-fw pi-calendar', class: 'rotated-icon', routerLink: ['/home/uikit/button'] },

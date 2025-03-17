@@ -17,7 +17,7 @@ import { MenuDemo } from './menudemo';
 
 export default [
     { path: 'registration', data: { breadcrumb: 'Form Layout' }, component: FormLayoutDemo },
-    { path: 'ip-admissions', data: { breadcrumb: 'Input' }, component: InputDemo },
+    // { path: 'ip-admissions', data: { breadcrumb: 'Input' }, component: InputDemo },
     { path: 'doctorslist', data: { breadcrumb: 'List' }, component: ListDemo },
 
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
