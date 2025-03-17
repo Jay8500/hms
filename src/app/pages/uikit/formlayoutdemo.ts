@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
@@ -12,6 +12,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { InputMaskModule } from 'primeng/inputmask';
 import { TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
+import { ProductService } from '../service/product.service';
+import { TagModule } from 'primeng/tag';
 
 interface State {
   name: string;
@@ -29,8 +31,9 @@ interface Patient {
   imports: [CommonModule, InputTextModule, FluidModule, ButtonModule, SelectModule, FormsModule, TextareaModule,
     DropdownModule,
     RadioButtonModule,
-    CalendarModule, InputMaskModule, TableModule, TabsModule
+    CalendarModule, InputMaskModule, TableModule, TabsModule,TagModule
   ],
+  providers: [ProductService],
   template: `
     <div class="card">
     <p-tabs value="0">
@@ -40,6 +43,7 @@ interface Patient {
         </p-tablist>
         <p-tabpanels>
             <p-tabpanel value="0">
+            <div style="height: 350px; overflow-y: auto;">
             <p-table [value]="patients">
           <ng-template pTemplate="header">
             <tr>
@@ -54,10 +58,14 @@ interface Patient {
               <td>{{ patient.name }}</td>
               <td>{{ patient.gender }}</td>
               <td>{{ patient.dob | date: 'MM/dd/yyyy' }}</td>
-              <td>{{ patient.admissionType }}</td>
+              <td>
+              <p-tag [value]="patient.admissionType" [severity]="_productService.getSeverityForAdmissionType(patient.admissionType)"></p-tag>
+              
+              </td>
             </tr>
           </ng-template>
         </p-table>
+</div>
             </p-tabpanel>
             <p-tabpanel value="1">
             <p-fluid>
@@ -296,7 +304,176 @@ interface Patient {
 </div>`
 })
 export class FormLayoutDemo {
-  patients: any= [
+  public _productService = inject(ProductService)
+  patients: any = [
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
+    {
+      name: 'John Doe',
+      gender: 'Male',
+      dob: new Date(1985, 5, 10),
+      admissionType: 'OP',
+    },
+    {
+      name: 'Jane Smith',
+      gender: 'Female',
+      dob: new Date(1992, 10, 20),
+      admissionType: 'IP',
+    },
     {
       name: 'John Doe',
       gender: 'Male',

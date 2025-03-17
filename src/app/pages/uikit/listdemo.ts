@@ -29,6 +29,7 @@ import { Product, ProductService } from '../service/product.service';
 
                 <ng-template #list let-items>
                     <div class="flex flex-col">
+                    <div style="height: 350px; overflow-y: auto;">
                         <div *ngFor="let item of items; let i = index">
                             <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4" [ngClass]="{ 'border-t border-surface': i !== 0 }">
                                 <div class="md:w-40 relative">
@@ -70,9 +71,11 @@ import { Product, ProductService } from '../service/product.service';
                             </div>
                         </div>
                     </div>
+                    </div>
                 </ng-template>
 
                 <ng-template #grid let-items>
+                <div style="height: 350px; overflow-y: auto;">
                     <div class="grid grid-cols-12 gap-4">
                         <div *ngFor="let item of items; let i = index" class="col-span-12 sm:col-span-6 lg:col-span-4 p-2">
                             <div class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col">
@@ -116,6 +119,7 @@ import { Product, ProductService } from '../service/product.service';
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </ng-template>
             </p-dataview>
