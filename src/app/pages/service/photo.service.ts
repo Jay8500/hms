@@ -1,7 +1,38 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient';
 
 @Injectable()
 export class PhotoService {
+    private supabase: SupabaseClient;
+    private auth: SupabaseAuthClient;
+
+    constructor() {
+        this.supabase = createClient(
+            'https://ceoflgbmuosykixuxuqr.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNlb2ZsZ2JtdW9zeWtpeHV4dXFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE5NDcwMTcsImV4cCI6MjA1NzUyMzAxN30.-HIcrcwsTkj7unhtkStAv0pANHOVUCtbWwghlHjz-4c'
+        );
+        this.auth = this.supabase.auth;
+    }
+
+    getSupabaseClient(): SupabaseClient {
+        return this.supabase;
+    }
+
+    getAuthClient(): SupabaseAuthClient {
+        return this.auth;
+    }
+
+    async getItems() {
+        const { data, error } = await this.supabase.from('items').select('*');
+        if (error) {
+            console.error('Error fetching items:', error);
+            return null;
+        }
+        return data;
+    }
+
     getData() {
         return [
             {
