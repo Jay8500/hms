@@ -1,24 +1,26 @@
 import { Routes } from '@angular/router';
 import { ButtonDemo } from './buttondemo';
-import { ChartDemo } from './chartdemo';
-import { FileDemo } from './filedemo';
+// import { ChartDemo } from './chartdemo';
+// import { FileDemo } from './filedemo';
 import { FormLayoutDemo } from './formlayoutdemo';
-import { InputDemo } from './inputdemo';
+// import { InputDemo } from './inputdemo';
 import { ListDemo } from './listdemo';
-import { MediaDemo } from './mediademo';
-import { MessagesDemo } from './messagesdemo';
-import { MiscDemo } from './miscdemo';
-import { PanelsDemo } from './panelsdemo';
-import { TimelineDemo } from './timelinedemo';
+// import { MediaDemo } from './mediademo';
+// import { MessagesDemo } from './messagesdemo';
+// import { MiscDemo } from './miscdemo';
+// import { PanelsDemo } from './panelsdemo';
+// import { TimelineDemo } from './timelinedemo';
 import { TableDemo } from './tabledemo';
-import { OverlayDemo } from './overlaydemo';
-import { TreeDemo } from './treedemo';
-import { MenuDemo } from './menudemo';
+// import { OverlayDemo } from './overlaydemo';
+// import { TreeDemo } from './treedemo';
+// import { MenuDemo } from './menudemo';
+import { Inventory } from './inventory';
 
 export default [
     { path: 'registration', data: { breadcrumb: 'Form Layout' }, component: FormLayoutDemo },
     // { path: 'ip-admissions', data: { breadcrumb: 'Input' }, component: InputDemo },
     { path: 'doctorslist', data: { breadcrumb: 'List' }, component: ListDemo },
+    { path: 'inventory', data: { breadcrumb: 'Inventory' }, component: Inventory },
 
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     // { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },

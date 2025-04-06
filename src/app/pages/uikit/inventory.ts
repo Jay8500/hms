@@ -26,44 +26,38 @@ interface Patient {
     admissionType: string;
 }
 @Component({
-    selector: 'app-formlayout-demo',
+    selector: 'inventory',
     standalone: true,
     imports: [CommonModule, InputTextModule, ChipModule, FluidModule, ButtonModule, SelectModule, FormsModule, TextareaModule, RadioButtonModule, SelectButtonModule, CalendarModule, InputMaskModule, TableModule, TabsModule, TagModule],
     providers: [ProductService],
     template: ` <div class="card">
         <p-tabs value="0">
             <p-tablist>
-                <p-tab value="0">Registrations</p-tab>
-                <p-tab value="1">Create Registration</p-tab>
+                <p-tab value="0">Inventory Items</p-tab>
+                <p-tab value="1">Create Item</p-tab>
             </p-tablist>
             <p-tabpanels>
                 <p-tabpanel value="0">
                     <div style="height: 441px; overflow-y: auto;">
-                        <p-table [value]="patients" stripedRows>
+                        <p-table [value]="inventoryItemsInfo" stripedRows>
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th style="min-width:1rem">
+                                    <!-- <th style="min-width:1rem">
                                         <div class="flex items-left">
                                             <p-selectbutton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value" aria-labelledby="basic" (onChange)="onGetType()" />
                                         </div>
-                                    </th>
-                                    <th style="min-width:20rem">Patient Name</th>
-                                    <th style="min-width:4rem">
+                                    </th> -->
+                                    <th style="min-width:20rem">Item Name</th>
+                                    <th style="min-width:10rem">
                                         <div class="flex items-center">
-                                            Mobile
-                                            <p-columnFilter type="text" field="phoneNumber" display="menu" />
+                                            Code
+                                            <p-columnFilter type="text" field="code" display="menu" />
                                         </div>
                                     </th>
-                                    <th style="min-width:4rem">
+                                    <th style="min-width:15rem">
                                         <div class="flex items-center">
-                                            Email
-                                            <p-columnFilter type="text" field="email" display="menu" />
-                                        </div>
-                                    </th>
-                                    <th style="min-width:4rem">
-                                        <div class="flex items-center">
-                                            Blood Group
-                                            <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
+                                            Category
+                                            <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
                                                 <ng-template #filter let-values let-filter="filterCallback">
                                                     <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
                                                         <ng-template let-option #item>
@@ -71,76 +65,162 @@ interface Patient {
                                                         </ng-template>
                                                     </p-select>
                                                 </ng-template>
-                                            </p-columnFilter>
+                                            </p-columnFilter> -->
                                         </div>
                                     </th>
-                                    <th style="min-width:4rem">MRN No.</th>
-                                    <th style="min-width:4rem">
+                                    <th style="min-width:10rem">
                                         <div class="flex items-center">
-                                            Status
-                                            <p-columnFilter field="status" matchMode="equals" display="menu">
+                                            Stock Level
+                                            <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
                                                 <ng-template #filter let-values let-filter="filterCallback">
-                                                    <p-select [(ngModel)]="value" [options]="status" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
+                                                    <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
                                                         <ng-template let-option #item>
-                                                            <p-tag [value]="option.value" [severity]="option.label == 'Active' ? 'success' : option.label == 'Inactive' ? 'warn' : 'danger'"></p-tag>
+                                                            <p-tag [value]="option.value" severity="warn"></p-tag>
                                                         </ng-template>
                                                     </p-select>
                                                 </ng-template>
-                                            </p-columnFilter>
+                                            </p-columnFilter> -->
+                                        </div>
+                                    </th>
+                                    <th style="min-width:10rem">
+                                        <div class="flex items-center">
+                                            Measurement (Unit)
+                                            <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
+                                                <ng-template #filter let-values let-filter="filterCallback">
+                                                    <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
+                                                        <ng-template let-option #item>
+                                                            <p-tag [value]="option.value" severity="warn"></p-tag>
+                                                        </ng-template>
+                                                    </p-select>
+                                                </ng-template>
+                                            </p-columnFilter> -->
+                                        </div>
+                                    </th>
+                                    <th style="min-width:4rem">
+                                        <div class="flex items-center">
+                                            Reorder Unit
+                                            <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
+                                                <ng-template #filter let-values let-filter="filterCallback">
+                                                    <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
+                                                        <ng-template let-option #item>
+                                                            <p-tag [value]="option.value" severity="warn"></p-tag>
+                                                        </ng-template>
+                                                    </p-select>
+                                                </ng-template>
+                                            </p-columnFilter> -->
+                                        </div>
+                                    </th>
+                                    <th style="min-width:20rem">
+                                        <div class="flex items-center">
+                                            Location
+                                            <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
+                                                <ng-template #filter let-values let-filter="filterCallback">
+                                                    <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
+                                                        <ng-template let-option #item>
+                                                            <p-tag [value]="option.value" severity="warn"></p-tag>
+                                                        </ng-template>
+                                                    </p-select>
+                                                </ng-template>
+                                            </p-columnFilter> -->
+                                        </div>
+                                    </th>
+                                    <!-- <th style="min-width:4rem">
+                                        <div class="flex items-center">Expiry Date</div>
+                                    </th> -->
+                                    <th style="min-width:20rem">
+                                        <div class="flex items-center">
+                                            Supplier
+                                            <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
+                                                <ng-template #filter let-values let-filter="filterCallback">
+                                                    <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
+                                                        <ng-template let-option #item>
+                                                            <p-tag [value]="option.value" severity="warn"></p-tag>
+                                                        </ng-template>
+                                                    </p-select>
+                                                </ng-template>
+                                            </p-columnFilter> -->
+                                        </div>
+                                    </th>
+                                    <th style="min-width:20rem">
+                                        <div class="flex items-center">
+                                            Description
+                                            <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
+                                                <ng-template #filter let-values let-filter="filterCallback">
+                                                    <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
+                                                        <ng-template let-option #item>
+                                                            <p-tag [value]="option.value" severity="warn"></p-tag>
+                                                        </ng-template>
+                                                    </p-select>
+                                                </ng-template>
+                                            </p-columnFilter> -->
                                         </div>
                                     </th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-patient>
+                            <ng-template pTemplate="body" let-inventoryItems>
                                 <tr>
-                                    <td class="text-center">
-                                        <p-tag [value]="patient.admissionType" [severity]="_productService.getSeverityForAdmissionType(patient.admissionType)"></p-tag>
-                                    </td>
                                     <td>
                                         <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
                                             <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
-                                                {{ patient.name.slice(0, 1) }}
+                                                {{ inventoryItems.name.slice(0, 1) }}
                                             </span>
-                                            <span class="ml-2 font-medium"> {{ patient.name }} </span>
+                                            <span class="ml-2 font-medium"> {{ inventoryItems.name }} </span>
                                         </p-chip>
-                                        <div style="margin-left:15px;margin-top:3px" class="flex flex-row">
+                                        <!-- <div style="margin-left:15px;margin-top:3px" class="flex flex-row">
                                             <div class="flex">
-                                                <p-tag [value]="patient.gender" [severity]="patient.gender == 'Male' ? 'success' : 'danger'"></p-tag>
+                                                <p-tag [value]="inventoryItems.gender" [severity]="inventoryItems.gender == 'Male' ? 'success' : 'danger'"></p-tag>
                                             </div>
                                             <div class="flex font-semibold text-sm mt-1 ml-2">
                                                 <div>
-                                                    <div class="text-sm">{{ patient.dob | date: 'dd MMM yyyy' }}</div>
-                                                    <div class="text-xs">{{ patient.dobText }}</div>
+                                                    <div class="text-sm">{{ inventoryItems.dob | date: 'dd MMM yyyy' }}</div>
+                                                    <div class="text-xs">{{ inventoryItems.dobText }}</div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
 
-                                        <!-- <p-tag [value]="patient.gender" [severity]="patient.gender == 'Male' ? 'success' : 'danger'"></p-tag>
+                                        <!-- <p-tag [value]="inventoryItems.gender" [severity]="inventoryItems.gender == 'Male' ? 'success' : 'danger'"></p-tag>
                                         <div class="flex flex-row justify-content-between font-semibold text-sm mt-1 ml-2">
-                                            {{ patient.dob | date: 'dd MMM yyyy' }}
+                                            {{ inventoryItems.dob | date: 'dd MMM yyyy' }}
                                         </div>
-                                        {{ patient.dobText }} -->
+                                        {{ inventoryItems.dobText }} -->
                                     </td>
                                     <td class="text-right">
-                                        {{ patient.phoneNumber }}
+                                        {{ inventoryItems.code }}
                                     </td>
                                     <td>
-                                        {{ patient.email }}
+                                        {{ inventoryItems.category }}
                                     </td>
                                     <td>
-                                        <p-tag [value]="patient.bloodGroup" [severity]="'warn'"></p-tag>
+                                        {{ inventoryItems.currentStockLevel }}
                                     </td>
                                     <td>
-                                        {{ patient.mrnNo }}
+                                        {{ inventoryItems.unitOfMeasurement }}
                                     </td>
                                     <td>
-                                        <p-tag [value]="patient.status" [severity]="patient.status == 'Active' ? 'success' : patient.status == 'Inactive' ? 'warn' : 'danger'"></p-tag>
+                                        {{ inventoryItems.reorderPoint }}
+                                    </td>
+                                    <td>
+                                        {{ inventoryItems.location }}
+                                    </td>
+                                    <!-- <td>
+                                        <div class="flex font-semibold text-sm mt-1 ml-2">
+                                            <div>
+                                                <div class="text-sm">Expiry Date</div>
+                                                <div class="text-xs">{{ inventoryItems.expiryDate }}</div>
+                                            </div>
+                                        </div>
+                                    </td> -->
+                                    <td>
+                                        {{ inventoryItems.supplierName }}
+                                    </td>
+                                    <td>
+                                        {{ inventoryItems.description }}
                                     </td>
                                 </tr>
                             </ng-template>
                             <ng-template #emptymessage>
                                 <tr>
-                                    <td colspan="6" class="text-center">No Registrations found.</td>
+                                    <td colspan="4" class="text-center">No Items found.</td>
                                 </tr>
                             </ng-template>
                         </p-table>
@@ -150,147 +230,74 @@ interface Patient {
                     <p-fluid>
                         <div class="flex mt-8">
                             <div class="card flex flex-col gap-6 w-full">
-                                <div class="font-semibold text-xl">Registration</div>
+                                <div class="font-semibold text-xl">Item</div>
                                 <div class="flex flex-col md:flex-row gap-6">
                                     <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="firstname2">Firstname</label>
+                                        <label for="firstname2">Name</label>
                                         <input pInputText id="firstname2" type="text" [(ngModel)]="firstname" />
                                     </div>
                                     <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="lastname2">Middlename</label>
+                                        <label for="lastname2">Code</label>
                                         <input pInputText id="lastname2" type="text" [(ngModel)]="middle" />
                                     </div>
                                     <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="lastname2">Lastname</label>
+                                        <label for="lastname2">Category</label>
                                         <input pInputText id="lastname2" type="text" [(ngModel)]="lastname" />
                                     </div>
                                 </div>
 
-                                <div class="flex flex-wrap">
-                                    <label for="address">Address</label>
-                                    <textarea pTextarea id="address" rows="4" [(ngModel)]="address"></textarea>
-                                </div>
-
                                 <div class="flex flex-col md:flex-row gap-6">
                                     <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="state">State</label>
-                                        <p-select id="state" [(ngModel)]="state" [options]="states" optionLabel="name" placeholder="Select State" class="w-full"></p-select>
-                                    </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="zip">Zip</label>
-                                        <input pInputText id="zip" type="text" [(ngModel)]="zip" />
-                                    </div>
-                                </div>
-
-                                <div class="flex flex-col md:flex-row gap-6">
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label>Admission Type</label>
+                                        <label>Category</label>
                                         <div class="flex gap-4">
                                             <div class="flex align-items-center">
                                                 <p-radioButton name="admissionType" value="OP" [(ngModel)]="admissionType" inputId="op"></p-radioButton>
-                                                <label for="op" class="ml-2">OP (Outpatient)</label>
+                                                <label for="op" class="ml-2">Pharmaceuticals</label>
                                             </div>
                                             <div class="flex align-items-center">
                                                 <p-radioButton name="admissionType" value="IP" [(ngModel)]="admissionType" inputId="ip"></p-radioButton>
-                                                <label for="ip" class="ml-2">IP (Inpatient)</label>
+                                                <label for="ip" class="ml-2">Medical Supplies</label>
+                                            </div>
+                                            <div class="flex align-items-center">
+                                                <p-radioButton name="admissionType" value="IP" [(ngModel)]="admissionType" inputId="ip"></p-radioButton>
+                                                <label for="ip" class="ml-2">Medical Equipment</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="dob">Date of Birth</label>
-                                        <p-calendar inputId="dob" [(ngModel)]="dob" [showIcon]="true" dateFormat="mm/dd/yy"></p-calendar>
-                                    </div>
                                 </div>
 
                                 <div class="flex flex-col md:flex-row gap-6">
                                     <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="phoneNumber">Phone Number</label>
-                                        <p-inputMask id="phoneNumber" [(ngModel)]="phoneNumber" mask="(+91) 999-999-9999"></p-inputMask>
-                                    </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="email">Email</label>
-                                        <input pInputText id="email" type="email" [(ngModel)]="email" />
-                                    </div>
-                                </div>
-
-                                <div class="flex flex-col md:flex-row gap-6">
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="emergencyContactName">Emergency Contact Name</label>
+                                        <label for="emergencyContactName">Stock Level</label>
                                         <input pInputText id="emergencyContactName" type="text" [(ngModel)]="emergencyContactName" />
                                     </div>
                                     <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="emergencyContactNumber">Emergency Contact Number</label>
+                                        <label for="emergencyContactNumber">Measurement Unit</label>
                                         <input pInputText id="emergencyContactNumber" type="text" [(ngModel)]="emergencyContactNumber" />
                                     </div>
                                 </div>
 
                                 <div class="flex flex-col md:flex-row gap-6">
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label>Gender</label>
-                                        <div class="flex gap-4">
-                                            <div class="flex align-items-center">
-                                                <p-radioButton name="gender" value="Male" [(ngModel)]="gender" inputId="male"></p-radioButton>
-                                                <label for="male" class="ml-2">Male</label>
-                                            </div>
-                                            <div class="flex align-items-center">
-                                                <p-radioButton name="gender" value="Female" [(ngModel)]="gender" inputId="female"></p-radioButton>
-                                                <label for="female" class="ml-2">Female</label>
-                                            </div>
-                                            <div class="flex align-items-center">
-                                                <p-radioButton name="gender" value="Other" [(ngModel)]="gender" inputId="other"></p-radioButton>
-                                                <label for="other" class="ml-2">Other</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="bloodGroup">Blood Group</label>
-                                        <p-select id="bloodGroup" [(ngModel)]="bloodGroup" [options]="bloodGroups" placeholder="Select Blood Group" class="w-full"></p-select>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col md:flex-row gap-6">
                                     <div class="flex flex-col gap-2 w-full">
-                                        <label for="mrn">MRN (Medical Record Number)</label>
+                                        <label for="mrn">Reorder Unit</label>
                                         <input pInputText id="mrn" type="text" [(ngModel)]="mrn" style="width: 150px;" />
                                     </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="occupation">Occupation</label>
-                                        <input pInputText id="occupation" type="text" [(ngModel)]="occupation" />
-                                    </div>
                                 </div>
 
                                 <div class="flex flex-col md:flex-row gap-6">
                                     <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="insuranceProvider">Insurance Provider</label>
+                                        <label for="insuranceProvider">Supplier</label>
                                         <input pInputText id="insuranceProvider" type="text" [(ngModel)]="insuranceProvider" />
-                                    </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="insuranceNumber">Insurance Number</label>
-                                        <input pInputText id="insuranceNumber" type="text" [(ngModel)]="insuranceNumber" />
-                                    </div>
-                                </div>
-                                <div class="flex flex-col md:flex-row gap-6" *ngIf="admissionType === 'IP'">
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="admittingDoctor">Admitting Doctor</label>
-                                        <input pInputText id="admittingDoctor" type="text" [(ngModel)]="admittingDoctor" />
-                                    </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="roomNumber">Room Number</label>
-                                        <input pInputText id="roomNumber" type="text" [(ngModel)]="roomNumber" style="width: 100px;" />
                                     </div>
                                 </div>
 
-                                <div class="flex flex-col md:flex-row gap-6" *ngIf="admissionType === 'OP'">
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="visitingDepartment">Visiting Department</label>
-                                        <input pInputText id="visitingDepartment" type="text" [(ngModel)]="visitingDepartment" />
-                                    </div>
-                                    <div class="flex flex-col gap-2 w-full">
-                                        <label for="appointmentTime">Appointment Time</label>
-                                        <p-calendar inputId="appointmentTime" [(ngModel)]="appointmentTime" [timeOnly]="true" hourFormat="12"></p-calendar>
-                                    </div>
+                                <div class="flex flex-wrap">
+                                    <label for="address">Location</label>
+                                    <textarea pTextarea id="address" rows="4" [(ngModel)]="address"></textarea>
                                 </div>
+
                                 <div class="flex gap-4 justify-conent-between">
-                                    <button pButton label="Register" class="p-button-sm" (click)="register()" [disabled]="isFormDisabled()"></button>
+                                    <button pButton label="Create Item" class="p-button-sm" (click)="register()" [disabled]="isFormDisabled()"></button>
                                     <button pButton label="Cancel" (click)="cancel()" [disabled]="isFormDisabled()" class="p-button-sm p-button-secondary ml-2"></button>
                                 </div>
                             </div>
@@ -301,7 +308,7 @@ interface Patient {
         </p-tabs>
     </div>`
 })
-export class FormLayoutDemo {
+export class Inventory {
     public _productService = inject(ProductService);
 
     stateOptions: any[] = [
@@ -310,71 +317,57 @@ export class FormLayoutDemo {
         { label: 'OP', value: 'OP' }
     ];
     value: string = 'all';
-    patients: any = [
+    inventoryItemsInfo: any = [
         {
-            name: 'Jay',
-            gender: 'Male',
-            dob: new Date(1995, 9, 31),
-            dobText: this.calculateAge(new Date(1995, 9, 31)),
-            admissionType: 'OP',
-            email: 'j@gmail.com',
-            phoneNumber: '8989898989',
-            bloodGroup: 'B+',
-            mrnNo: '345345345345345',
-            status: 'Active'
+            name: 'Amoxicillin 250mg Capsules',
+            code: 'AMOX-250-CAP',
+            category: 'Pharmaceuticals',
+            currentStockLevel: 350,
+            unitOfMeasurement: 'Strip (10 Capsules/ Strip)',
+            reorderPoint: 100,
+            location: 'Main Pharmacy, Shelf C4',
+            expiryDate: this.calculateAge(new Date(2026, 6, 31)),
+            supplierName: 'Apollo Pharma Distributors',
+            description: null
         },
         {
-            name: 'John Doe',
-            gender: 'Male',
-            dob: new Date(2000, 5, 18),
-            dobText: this.calculateAge(new Date(2000, 5, 18)),
-            admissionType: 'OP',
-            email: 'jhondoe@gmail.com',
-            phoneNumber: '8989898989',
-            bloodGroup: 'B+',
-            mrnNo: '345345345345345',
-            status: 'Active'
+            name: 'Surgical Gloves (Size 7)',
+            code: 'SG-L-07',
+            category: 'Medical Supplies',
+            currentStockLevel: 180,
+            unitOfMeasurement: 'Pair',
+            reorderPoint: 50,
+            location: 'Operation Theater Store, Cabinet 2',
+            expiryDate: this.calculateAge(new Date(2027, 0, 15)),
+            supplierName: 'SurgiCare India',
+            description: null
         },
         {
-            name: 'Jane',
-            gender: 'Female',
-            dob: new Date(1994, 10, 20),
-            dobText: this.calculateAge(new Date(1994, 10, 20)),
-            admissionType: 'IP',
-            email: 'jane@gmail.com',
-            phoneNumber: '7845454845',
-            bloodGroup: 'O+',
-            mrnNo: '785345345345345',
-            status: 'Active'
+            name: 'Normal Saline Solution (500ml)',
+            code: 'NSS-500ML',
+            category: 'Medical Supplies',
+            currentStockLevel: 280,
+            unitOfMeasurement: 'Bottle',
+            reorderPoint: 70,
+            location: 'General Ward Store, Shelf B1',
+            expiryDate: this.calculateAge(new Date(2025, 8, 15)),
+            supplierName: 'MedLife Supplies',
+            description: null
         },
         {
-            name: 'Karthika',
-            gender: 'Female',
-            dob: new Date(2000, 10, 20),
-            dobText: this.calculateAge(new Date(2000, 10, 20)),
-
-            admissionType: 'IP',
-            email: 'karthika@gmail.com',
-            phoneNumber: '7845454845',
-            bloodGroup: 'O+',
-            mrnNo: '785345345345345',
-            status: 'Active'
-        },
-        {
-            name: 'Deepika',
-            gender: 'Female',
-            dob: new Date(2004, 10, 20),
-            dobText: this.calculateAge(new Date(2004, 10, 20)),
-            admissionType: 'IP',
-            email: 'deepika@gmail.com',
-            phoneNumber: '9845454845',
-            bloodGroup: 'O+',
-            mrnNo: '785345345345345',
-            status: 'Inactive'
+            name: 'Digital Thermometer',
+            code: 'DIGI-THERM-01',
+            category: 'Medical Equipment',
+            currentStockLevel: 28,
+            unitOfMeasurement: 'Each',
+            reorderPoint: 10,
+            location: 'Nursing Station, Equipment Rack',
+            expiryDate: this.calculateAge(new Date(2025, 8, 15)),
+            supplierName: 'HealthTech Instruments',
+            description: null
         }
-        // Add more sample patient data here
     ];
-    filteredPatients: any = JSON.stringify(this.patients);
+    filteredPatients: any = JSON.stringify(this.inventoryItemsInfo);
     dropdownItems = [
         { name: 'Option 1', code: 'Option 1' },
         { name: 'Option 2', code: 'Option 2' },
@@ -484,11 +477,11 @@ export class FormLayoutDemo {
 
     onGetType() {
         if (this.value === 'all') {
-            this.patients = [...JSON.parse(this.filteredPatients)];
+            this.inventoryItemsInfo = [...JSON.parse(this.filteredPatients)];
         } else {
             console.log(this.filteredPatients);
             let parsePatients = JSON.parse(this.filteredPatients);
-            this.patients = parsePatients.filter((patient: any) => patient.admissionType === this.value);
+            this.inventoryItemsInfo = parsePatients.filter((inventoryItems: any) => inventoryItems.admissionType === this.value);
         }
     }
 
