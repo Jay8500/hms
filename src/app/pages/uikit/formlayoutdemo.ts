@@ -42,8 +42,8 @@ interface Patient {
                         <p-table [value]="patients">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th style="min-width:4rem">Patient Name</th>
-                                    <th style="min-width:10rem" class="text-center">
+                                    <th style="min-width:20rem">Patient Name</th>
+                                    <th style="min-width:6rem" >
                                         <!-- Admission Type -->
                                         <!-- <div class="card flex justify-center"> -->
                                         <p-selectbutton [options]="stateOptions" [(ngModel)]="value" optionLabel="label" optionValue="value" aria-labelledby="basic" (onChange)="onGetType()" />
@@ -69,7 +69,7 @@ interface Patient {
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
+                                    <td class="text-center">
                                         <p-tag [value]="patient.admissionType" [severity]="_productService.getSeverityForAdmissionType(patient.admissionType)"></p-tag>
                                     </td>
                                     <td class="text-right">
