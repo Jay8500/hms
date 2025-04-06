@@ -11,11 +11,12 @@ import { SupabasedbService } from '../service/supabasedb.service';
 import { LoginserviceService } from '../service/loginservice.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [ButtonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule,
+    imports: [ButtonModule, CommonModule, CheckboxModule, InputTextModule, PasswordModule, FormsModule, RouterModule, RippleModule,
         //  AppFloatingConfigurator,
         ToastModule
     ],
