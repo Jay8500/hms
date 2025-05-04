@@ -20,6 +20,7 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { BlockUIModule } from 'primeng/blockui';
 import { PanelModule } from 'primeng/panel';
 import { CheckboxModule } from 'primeng/checkbox';
+import { MessageModule } from 'primeng/message';
 interface State {
     name: string;
     code: string;
@@ -37,6 +38,7 @@ interface Patient {
         CommonModule,
         PanelModule,
         BlockUIModule,
+        MessageModule,
         CheckboxModule,
         InputTextModule,
         ChipModule,
@@ -66,7 +68,8 @@ interface Patient {
                 </p-tablist>
                 <p-tabpanels>
                     <p-tabpanel value="0">
-                        <div class="main-card">
+                        <p-message>Any Permission changes will be reflected for the users at their relogin</p-message>
+                        <div class="main-card mt-2">
                             <p-select
                                 class="flex mb-2"
                                 id="bloodGroup"
@@ -81,7 +84,7 @@ interface Patient {
                             </p-select>
                             <div class="grid">
                                 <div class="col-6 col-offset-4">
-                                    <div style="height: 390px; overflow-y: auto;">
+                                    <div style="height: 365px; overflow-y: auto;">
                                         <div *ngFor="let document of getAllDocs">
                                             <p-panel #pnl styleClass="mt-2">
                                                 <ng-template #header>
