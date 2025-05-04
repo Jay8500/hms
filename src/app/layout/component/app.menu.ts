@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
+import { LoginserviceService } from '../../pages/service/loginservice.service';
 
 @Component({
     selector: 'app-menu',
@@ -17,8 +18,40 @@ import { AppMenuitem } from './app.menuitem';
 })
 export class AppMenu {
     model: MenuItem[] = [];
-
-    ngOnInit() {
+    public getService = inject(LoginserviceService);
+    async ngOnInit() {
+        let data = await this.getService.getDocumentPermissionsForUser(this.getService.getLocalKeys('id'));
+        if (data.length > 0) {
+            let isDashboard = data.filter((doc: any) => doc['docid'] == 5);
+            if (isDashboard.length > 0) {
+                this.model.push({
+                    label: 'Home',
+                    items: [
+                        {
+                            label: isDashboard[0]['docname'],
+                            // icon: 'd',
+                            routerLink: [`/${isDashboard[0]['page_url']}`]
+                        }
+                    ]
+                });
+            }
+            let isNoDashboard = data.filter((doc: any) => doc['docid'] != 5);
+            if (isNoDashboard.length > 0) {
+                let createModules: any = {
+                    label: 'Modules',
+                    items: []
+                };
+                isNoDashboard.forEach((element: any) => {
+                    createModules.items.push({
+                        label: element['docname'],
+                        // icon: 'pi pi-fw pi-home',
+                        routerLink: [`/${element['page_url']}`]
+                    });
+                });
+                this.model.push(createModules);
+            }
+        }
+        return;
         this.model = [
             {
                 label: 'Home',
@@ -29,10 +62,11 @@ export class AppMenu {
                 items: [
                     // { label: 'Employees', icon: 'pi pi-fw pi-id-card', routerLink: ['/home/uikit/formlayout'] },
 
-                    { label: 'Registration OP/ IP', icon: 'pi pi-fw pi-pen-to-square', routerLink: ['/home/uikit/registration'] },
+                    { label: 'Registrations', icon: 'pi pi-fw pi-pen-to-square', routerLink: ['/home/hms/registration'] },
                     // { label: 'IP Admissions', icon: 'pi pi-fw pi-list', routerLink: ['/home/uikit/ip-admissions'] },
-                    { label: 'Doctors', icon: 'pi pi-fw pi-table', routerLink: ['/home/uikit/doctorslist'] },
-                    { label: 'Inventory Management', icon: 'pi pi-fw pi-table', routerLink: ['/home/uikit/inventory'] }
+                    { label: 'Employees Info', icon: 'pi pi-fw pi-table', routerLink: ['/home/hms/employeelist'] },
+                    { label: 'Inventory Management', icon: 'pi pi-fw pi-table', routerLink: ['/home/hms/inventory'] },
+                    { label: 'Settings', icon: 'pi pi-fw pi-table', routerLink: ['/home/hms/settings'] }
                     // { label: 'Patients', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon', routerLink: ['/home/uikit/button'] },
                     // { label: 'Scheduling', icon: 'pi pi-fw pi-calendar', class: 'rotated-icon', routerLink: ['/home/uikit/button'] },
                     // { label: 'Inventory', icon: 'pi pi-fw pi-table', routerLink: ['/home/uikit/table'] },

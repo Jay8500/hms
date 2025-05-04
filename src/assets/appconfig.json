@@ -1,0 +1,112 @@
+{
+    "employees": {
+      "addEmployee": {
+        "functionName": "add_employee",
+        "method": "post",
+        "params": [
+          {"name": "empname", "type": "string", "required": true},
+          {"name": "designation", "type": "string"},
+          {"name": "department", "type": "string"}
+        ]
+      },
+      "getEmployeeById": {
+        "functionName": "get_employee_by_id",
+        "method": "get",
+        "params": [
+          {"name": "empid", "type": "number", "required": true}
+        ]
+      }
+    },
+    "roles": {
+      "addRole": {
+        "functionName": "add_role",
+        "method": "post",
+        "params": [
+          {"name": "role_name", "type": "string", "required": true}
+        ]
+      },
+      "getRoleById": {
+        "functionName": "get_role_by_id",
+        "method": "get",
+        "params": [
+          {"name": "role_id", "type": "number", "required": true}
+        ]
+      }
+    },
+    "users": {
+      "addUser": {
+        "functionName": "add_user",
+        "method": "post",
+        "params": [
+          {"name": "username", "type": "string", "required": true},
+          {"name": "employee_id", "type": "number"},
+          {"name": "user_type", "type": "string", "required": true, "options": ["doctor", "employee"]}
+        ]
+      },
+      "getUserById": {
+        "functionName": "get_user_by_id",
+        "method": "get",
+        "params": [
+          {"name": "userid", "type": "number", "required": true}
+        ]
+      }
+    },
+    "userRoles": {
+      "assignRoleToUser": {
+        "functionName": "assign_role_to_user",
+        "method": "post",
+        "params": [
+          {"name": "user_id", "type": "number", "required": true},
+          {"name": "role_id", "type": "number", "required": true}
+        ]
+      },
+      "getUserRoles": {
+        "functionName": "get_user_roles",
+        "method": "get",
+        "params": [
+          {"name": "user_id", "type": "number", "required": true}
+        ]
+      }
+    },
+    "documents": {
+        "getAllDocuments": {
+            "functionName": "get_all_documents", 
+            "method": "get", 
+            "params": []    
+          },
+      "addDocument": {
+        "functionName": "add_document",
+        "method": "post",
+        "params": [
+          {"name": "docname", "type": "string", "required": true}
+        ]
+      },
+      "getDocumentById": {
+        "functionName": "get_document_by_id",
+        "method": "get",
+        "params": [
+          {"name": "docid", "type": "number", "required": true}
+        ]
+      }
+    },
+    "documentPermissions": {
+      "grantDocumentPermission": {
+        "functionName": "grant_document_permission",
+        "method": "post",
+        "params": [
+          {"name": "docid", "type": "number", "required": true},
+          {"name": "user_id", "type": "number", "required": true},
+          {"name": "can_view", "type": "boolean"},
+          {"name": "can_edit", "type": "boolean"}
+        ]
+      },
+      "getDocumentPermissionsForUser": {
+        "functionName": "get_document_permissions_for_user",
+        "method": "get",
+        "params": [
+          {"name": "docid", "type": "number", "required": true},
+          {"name": "user_id", "type": "number", "required": true}
+        ]
+      }
+    }
+  }
