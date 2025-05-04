@@ -180,12 +180,12 @@ export class LoginserviceService {
     async saveGrantDocAccessPermissions(ctrl: any) {
         let getData = null;
         let { data, error } = await this.supabase.rpc('grant_document_permission', {
-            p_docid: ctrl.docid,
-            p_user_id: ctrl.userId,
-            p_can_view: ctrl.checked,
-            p_can_edit: ctrl.can_edit_checked,
-            p_record_status: ctrl.record_status,
-            p_doc_permission_id: ctrl.doc_permission_id
+            "p_docid": ctrl.docid,
+            "p_user_id": ctrl.userId,
+            "p_can_view": ctrl.checked,
+            "p_can_edit": ctrl.can_edit_checked,
+            "p_record_status": ctrl.record_status,
+            "p_doc_permission_id": ctrl.doc_permission_id,
         });
         if (error) getData = error;
         else getData = data;

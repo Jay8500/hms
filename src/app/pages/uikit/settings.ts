@@ -639,6 +639,9 @@ export class settings implements OnInit {
             document.checked = false;
             document.can_edit_checked = false;
             const permissions = await this.loginSerivce.saveGrantDocAccessPermissions(document);
+            if (permissions) {
+                await this.onUserSelected({ value: document['userId'] });
+            }
         }
     }
 
@@ -646,8 +649,12 @@ export class settings implements OnInit {
         if (ctrl == 'c') {
             event['checked'] = myEvent['checked'];
         } else {
-            event['can_edit_checked'] = myEvent['can_edit_checked'];
+            event['can_edit_checked'] = myEvent['checked'];
         }
-        const permissions = await this.loginSerivce.saveGrantDocAccessPermissions(ctrl);
+        event['userId'] = this.userId;
+        const permissions = await this.loginSerivce.saveGrantDocAccessPermissions(event);
+        if (permissions) {
+            await this.onUserSelected({ value: event['userId'] });
+        }
     }
 }
