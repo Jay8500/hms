@@ -126,7 +126,7 @@ interface Patient {
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th style="min-width:1rem"></th>
-                                        <th style="min-width:20rem">Patient Name</th>
+                                        <th style="min-width:20rem">User Name</th>
                                         <th style="min-width:4rem">
                                             <div class="flex items-center">
                                                 Mobile
