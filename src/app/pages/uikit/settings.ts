@@ -22,7 +22,7 @@ import { PanelModule } from 'primeng/panel';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageModule } from 'primeng/message';
 import { DialogModule } from 'primeng/dialog';
-
+import { KeyFilterModule } from 'primeng/keyfilter';
 interface State {
     name: string;
     code: string;
@@ -49,6 +49,7 @@ interface Patient {
         SelectModule,
         FormsModule,
         TextareaModule,
+        FormsModule,
         RadioButtonModule,
         SelectButtonModule,
         CalendarModule,
@@ -57,7 +58,8 @@ interface Patient {
         TabsModule,
         TagModule,
         ToggleSwitchModule,
-        DialogModule
+        DialogModule,
+        KeyFilterModule
     ],
     providers: [ProductService],
     template: `<div class="card">
@@ -67,7 +69,9 @@ interface Patient {
                     <p-tab value="1">Manage Users</p-tab>
                     <p-tab value="2">Manage Employees</p-tab>
                     <p-tab value="3">Manage Roles</p-tab>
-                    <p-tab value="4">Manage Documents</p-tab>
+                    <p-tab value="4">Manage Designations</p-tab>
+                    <p-tab value="5">Manage Departments</p-tab>
+                    <p-tab value="6">Manage Documents</p-tab>
                 </p-tablist>
                 <p-tabpanels>
                     <p-tabpanel value="0">
@@ -361,6 +365,58 @@ interface Patient {
                         </div>
                     </p-tabpanel>
                     <p-tabpanel value="4">
+                        <!--settings_mng_designations -->
+                        <p-button (click)="showDialogDesig('add'); designationName['name'] = null; designationName['id'] = null" icon="pi pi-plus-circle" label="Add Designation" severity="secondary" styleClass="min-w-40" />
+                        <div class="main-card mt-2">
+                            <div class="grid">
+                                <div class="col-6 col-offset-4">
+                                    <div style="height: 365px; overflow-y: auto;">
+                                        <div *ngFor="let desigs of settings_mng_designations">
+                                            <p-panel styleClass="mt-2">
+                                                <ng-template pTemplate="header">
+                                                    <div class="font-light text-gray-700">Designation</div>
+                                                </ng-template>
+                                                <div style="width: 300px;">
+                                                    <div class="flex flex-row cursor-pointer" (click)="showDialogDesig('edit'); designationName['name'] = desigs.name; designationName['id'] = desigs.designation_id">
+                                                        <div class="font-bold text-green-600 ml-2">
+                                                            {{ desigs.name }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </p-panel>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p-tabpanel>
+                    <p-tabpanel value="5">
+                        <!--settings_mng_departments -->
+                        <p-button (click)="showDialogDept('add'); departmentName['name'] = null; departmentName['id'] = null" icon="pi pi-plus-circle" label="Add Department" severity="secondary" styleClass="min-w-40" />
+                        <div class="main-card mt-2">
+                            <div class="grid">
+                                <div class="col-6 col-offset-4">
+                                    <div style="height: 365px; overflow-y: auto;">
+                                        <div *ngFor="let deps of settings_mng_departments">
+                                            <p-panel styleClass="mt-2">
+                                                <ng-template pTemplate="header">
+                                                    <div class="font-light text-gray-700">Department</div>
+                                                </ng-template>
+                                                <div style="width: 300px;">
+                                                    <div class="flex flex-row cursor-pointer" (click)="showDialogDept('edit'); departmentName['name'] = deps.name; departmentName['id'] = deps.depsrtment_id">
+                                                        <div class="font-bold text-green-600 ml-2">
+                                                            {{ deps.name }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </p-panel>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p-tabpanel>
+                    <p-tabpanel value="6">
                         <!--settings_mng_documents -->
                         <p-button (click)="showDialog('add'); myDocName['myDocName'] = null; myDocName['docid'] = null" icon="pi pi-plus-circle" label="Add Document" severity="secondary" styleClass="min-w-40" />
                         <div class="main-card mt-2">
@@ -392,13 +448,13 @@ interface Patient {
             <p-dialog [header]="mode == 'add' ? 'Add a Document' : 'Editing Document'" [modal]="true" [(visible)]="isvisible" position="right" [style]="{ width: '25rem' }">
                 <!-- <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span> -->
                 <div class="flex items-center gap-4 mb-4">
-                    <label for="username" class="font-semibold w-10">Name</label>
-                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="myDocName['myDocName']" />
+                    <!-- <label for="username" class="font-semibold w-10">Name</label> -->
+                    <input pInputText  id="username" class="flex-auto" autocomplete="off" [(ngModel)]="myDocName.myDocName" [pKeyFilter]="'alpha'"/>
                 </div>
 
                 <div class="flex justify-end gap-2">
                     <p-button label="Cancel" severity="secondary" (click)="isvisible = false" />
-                    <p-button label="Save" (click)="saveDocument()" [disabled]="[null, ''].includes(myDocName['myDocName'])" />
+                    <p-button label="Save" (click)="saveDocument()" [disabled]="[null, ''].includes(myDocName['myDocName'])" [loading]="isDocSuccess" />
                 </div>
                 <p-message [severity]="isDocSuccess ? 'success' : 'warn'" *ngIf="isDocSuccess">
                     {{ isDocSuccess ? 'Document Added' : 'Unable to process request' }}
@@ -408,16 +464,48 @@ interface Patient {
             <p-dialog [header]="mode == 'add' ? 'Add a Role' : 'Editing Role'" [modal]="true" [(visible)]="isRolevisible" position="right" [style]="{ width: '25rem' }">
                 <!-- <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span> -->
                 <div class="flex items-center gap-4 mb-4">
-                    <label for="username" class="font-semibold w-10">Name</label>
-                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="roleName['name']" />
+                    <!-- <label for="username" class="font-semibold w-10">Name</label> -->
+                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="roleName.name" [pKeyFilter]="'alpha'" />
                 </div>
 
                 <div class="flex justify-end gap-2">
                     <p-button label="Cancel" severity="secondary" (click)="isRolevisible = false" />
-                    <p-button label="Save" (click)="saveRoleDocument()" [disabled]="[null, ''].includes(roleName['name'])" />
+                    <p-button label="Save" (click)="saveRoleDocument()" [disabled]="[null, ''].includes(roleName['name'])" [loading]="isRoleSuccess" />
                 </div>
                 <p-message [severity]="isRoleSuccess ? 'success' : 'warn'" *ngIf="isRoleSuccess">
                     {{ isDocSuccess ? 'Role Added' : 'Unable to process request' }}
+                </p-message>
+            </p-dialog>
+
+            <p-dialog [header]="mode == 'add' ? 'Add a Designation' : 'Editing Designation'" [modal]="true" [(visible)]="isDesigvisible" position="right" [style]="{ width: '25rem' }">
+                <!-- <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span> -->
+                <div class="flex items-center gap-4 mb-4">
+                    <!-- <label for="username" class="font-semibold w-10">Name</label> -->
+                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="designationName.name" [pKeyFilter]="'alpha'" />
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <p-button label="Cancel" severity="secondary" (click)="isRolevisible = false" />
+                    <p-button label="Save" (click)="saveDesig()" [disabled]="[null, ''].includes(designationName['name'])" [loading]="isDesigSucess" />
+                </div>
+                <p-message [severity]="isRoleSuccess ? 'success' : 'warn'" *ngIf="isRoleSuccess">
+                    {{ isDocSuccess ? 'Role Added' : 'Unable to process request' }}
+                </p-message>
+            </p-dialog>
+
+            <p-dialog [header]="mode == 'add' ? 'Add a Department' : 'Editing Department'" [modal]="true" [(visible)]="isDepvisible" position="right" [style]="{ width: '25rem' }">
+                <!-- <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span> -->
+                <div class="flex items-center gap-4 mb-4">
+                    <!-- <label for="username" class="font-semibold w-10">Name</label> -->
+                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="departmentName.name" [pKeyFilter]="'alpha'" />
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <p-button label="Cancel" severity="secondary" (click)="isRolevisible = false" />
+                    <p-button label="Save" (click)="saveDepartment()" [disabled]="[null, ''].includes(departmentName['name'])" [loading]="isdepSucess" />
+                </div>
+                <p-message [severity]="isRoleSuccess ? 'success' : 'warn'" *ngIf="isRoleSuccess">
+                    {{ isDocSuccess ? 'Department Added' : 'Unable to process request' }}
                 </p-message>
             </p-dialog>
         </div>
@@ -452,8 +540,12 @@ export class settings implements OnInit {
     public dropDownLoad: boolean = false;
     public isvisible: boolean = false;
     public isRolevisible: boolean = false;
-    public myDocName: any = { myDocName: null, docid: null };
-    public roleName: any = { name: null, id: null };
+    public isDesigvisible: boolean = false;
+    public isDepvisible: boolean = false;
+    public myDocName: any = { myDocName: '', docid: null };
+    public roleName: any = { name: '', id: null };
+    public designationName: any = { name: '', id: null };
+    public departmentName: any = { name: '', id: null };
     public isDocSuccess: any = false;
     public isRoleSuccess: any = false;
     public getAllDocs: any = [];
@@ -463,6 +555,8 @@ export class settings implements OnInit {
     public settings_mng_users: any = [];
     public settings_mng_employees: any = [];
     public settings_mng_roles: any = [];
+    public settings_mng_designations: any = [];
+    public settings_mng_departments: any = [];
     public settings_mng_documents: any = [];
 
     status: any[] = [
@@ -480,6 +574,8 @@ export class settings implements OnInit {
         this.dropDownLoad = false;
         this.getAllDocs = await this.loginSerivce.getDoc();
         this.settings_mng_roles = await this.loginSerivce.getRoles();
+        this.settings_mng_designations = await this.loginSerivce.getAllDesignations();
+        this.settings_mng_departments = await this.loginSerivce.getAllDepartments();
         this.settings_mng_documents = await this.loginSerivce.getDoc();
         this.getAllDocs.forEach((ele: any) => (ele.isDoc = false));
     }
@@ -572,13 +668,14 @@ export class settings implements OnInit {
     }
 
     async saveDocument() {
+        this.isDocSuccess = true;
         if (this.mode == 'add') {
         } else {
         }
         this.myDocName['myDocName'] = this.roleName['myDocName'].trim();
         const docAdd = await this.loginSerivce.saveDocument(this.myDocName);
         if (docAdd) {
-            this.isDocSuccess = true;
+            this.isDocSuccess = false;
             this.isvisible = false;
             this.settings_mng_documents = await this.loginSerivce.getDoc();
             this.myDocName['myDocName'] = null;
@@ -594,19 +691,68 @@ export class settings implements OnInit {
     }
 
     async saveRoleDocument() {
+        this.isRoleSuccess = true;
         if (this.mode == 'add') {
         } else {
         }
         this.roleName['name'] = this.roleName['name'].trim();
         const roleAddorEdit = await this.loginSerivce.saveRole(this.roleName);
         if (roleAddorEdit) {
-            this.isRoleSuccess = true;
+            this.isRoleSuccess = false;
             this.isRolevisible = false;
             this.settings_mng_roles = await this.loginSerivce.getRoles();
             this.roleName['name'] = null;
             this.roleName['id'] = null;
         } else {
             this.isRoleSuccess = false;
+        }
+    }
+
+    showDialogDesig(mode: string) {
+        this.isDesigvisible = true;
+        this.mode = mode;
+    }
+
+    public isDesigSucess = false;
+    async saveDesig() {
+        this.isDesigSucess = true;
+        if (this.mode == 'add') {
+        } else {
+        }
+        this.designationName['name'] = this.designationName['name'].trim();
+        const desigAddorEdit = await this.loginSerivce.saveDesignation(this.designationName);
+        if (desigAddorEdit) {
+            this.isDesigSucess = false;
+            this.isDesigvisible = false;
+            this.settings_mng_designations = await this.loginSerivce.getAllDesignations();
+            this.designationName['name'] = null;
+            this.designationName['id'] = null;
+        } else {
+            this.isDesigSucess = false;
+        }
+    }
+
+    showDialogDept(mode: string) {
+        this.isDepvisible = true;
+        this.mode = mode;
+    }
+
+    public isdepSucess = false;
+    async saveDepartment() {
+        this.isdepSucess = true;
+        if (this.mode == 'add') {
+        } else {
+        }
+        this.departmentName['name'] = this.departmentName['name'].trim();
+        const depSaveEdit = await this.loginSerivce.saveDepartment(this.departmentName);
+        if (depSaveEdit) {
+            this.isdepSucess = false;
+            this.isDepvisible = false;
+            this.settings_mng_departments = await this.loginSerivce.getAllDepartments();
+            this.departmentName['name'] = null;
+            this.departmentName['id'] = null;
+        } else {
+            this.isdepSucess = false;
         }
     }
 }

@@ -167,6 +167,21 @@ export class LoginserviceService {
         return docs;
     }
 
+    async getAllDesignations() {
+        let docs: any = null;
+        let { data, error } = await this.supabase.rpc('get_all_designations');
+        if (error) docs = error;
+        else docs = data;
+        return docs;
+    }
+    async getAllDepartments() {
+        let docs: any = null;
+        let { data, error } = await this.supabase.rpc('get_all_departments');
+        if (error) docs = error;
+        else docs = data;
+        return docs;
+    }
+
     getLocalKeys(key: any) {
         let myKey = null;
         myKey = JSON.parse(localStorage.getItem('hmskeys') || '')[key];
@@ -216,6 +231,28 @@ export class LoginserviceService {
         let { data, error } = await this.supabase.rpc('add_role', {
             role_name: ctrl.name,
             role_id: ctrl.id
+        });
+        if (error) getData = error;
+        else getData = data;
+        return getData;
+    }
+
+    async saveDesignation(ctrl: any) {
+        let getData = null;
+        let { data, error } = await this.supabase.rpc('add_designation', {
+            p_designame: ctrl.name,
+            p_desigid: ctrl.id
+        });
+        if (error) getData = error;
+        else getData = data;
+        return getData;
+    }
+
+    async saveDepartment(ctrl: any) {
+        let getData = null;
+        let { data, error } = await this.supabase.rpc('add_department', {
+            p_depname: ctrl.name,
+            p_depid: ctrl.id
         });
         if (error) getData = error;
         else getData = data;
