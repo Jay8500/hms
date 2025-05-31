@@ -159,6 +159,14 @@ export class LoginserviceService {
         return docs;
     }
 
+    async getRoles() {
+        let docs: any = null;
+        let { data, error } = await this.supabase.rpc('get_all_roles');
+        if (error) docs = error;
+        else docs = data;
+        return docs;
+    }
+
     getLocalKeys(key: any) {
         let myKey = null;
         myKey = JSON.parse(localStorage.getItem('hmskeys') || '')[key];
@@ -180,12 +188,34 @@ export class LoginserviceService {
     async saveGrantDocAccessPermissions(ctrl: any) {
         let getData = null;
         let { data, error } = await this.supabase.rpc('grant_document_permission', {
-            "p_docid": ctrl.docid,
-            "p_user_id": ctrl.userId,
-            "p_can_view": ctrl.checked,
-            "p_can_edit": ctrl.can_edit_checked,
-            "p_record_status": ctrl.record_status,
-            "p_doc_permission_id": ctrl.doc_permission_id,
+            p_docid: ctrl.docid,
+            p_user_id: ctrl.userId,
+            p_can_view: ctrl.checked,
+            p_can_edit: ctrl.can_edit_checked,
+            p_record_status: ctrl.record_status,
+            p_doc_permission_id: ctrl.doc_permission_id
+        });
+        if (error) getData = error;
+        else getData = data;
+        return getData;
+    }
+
+    async saveDocument(ctrl: any) {
+        let getData = null;
+        let { data, error } = await this.supabase.rpc('add_document', {
+            p_docname: ctrl.myDocName,
+            p_docid: ctrl.docid
+        });
+        if (error) getData = error;
+        else getData = data;
+        return getData;
+    }
+
+    async saveRole(ctrl: any) {
+        let getData = null;
+        let { data, error } = await this.supabase.rpc('add_role', {
+            role_name: ctrl.name,
+            role_id: ctrl.id
         });
         if (error) getData = error;
         else getData = data;

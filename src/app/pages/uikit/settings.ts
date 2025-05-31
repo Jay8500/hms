@@ -21,6 +21,8 @@ import { BlockUIModule } from 'primeng/blockui';
 import { PanelModule } from 'primeng/panel';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MessageModule } from 'primeng/message';
+import { DialogModule } from 'primeng/dialog';
+
 interface State {
     name: string;
     code: string;
@@ -54,7 +56,8 @@ interface Patient {
         TableModule,
         TabsModule,
         TagModule,
-        ToggleSwitchModule
+        ToggleSwitchModule,
+        DialogModule
     ],
     providers: [ProductService],
     template: `<div class="card">
@@ -333,196 +336,90 @@ interface Patient {
                     </p-tabpanel>
                     <p-tabpanel value="3">
                         <!--settings_mng_roles -->
-                        <div style="height: 441px; overflow-y: auto;">
-                            <p-table [value]="settings_mng_roles" stripedRows>
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th style="min-width:1rem"></th>
-                                        <th style="min-width:20rem">Patient Name</th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Mobile
-                                                <p-columnFilter type="text" field="phoneNumber" display="menu" />
-                                            </div>
-                                        </th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Email
-                                                <p-columnFilter type="text" field="email" display="menu" />
-                                            </div>
-                                        </th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">Blood Group</div>
-                                        </th>
-                                        <th style="min-width:4rem">MRN No.</th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">Status</div>
-                                        </th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-patient>
-                                    <tr>
-                                        <td class="text-center">
-                                            <p-tag [value]="patient.admissionType" [severity]="_productService.getSeverityForAdmissionType(patient.admissionType)"></p-tag>
-                                        </td>
-                                        <td>
-                                            <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
-                                                <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
-                                                    {{ patient.name.slice(0, 1) }}
-                                                </span>
-                                                <span class="ml-2 font-medium"> {{ patient.name }} </span>
-                                            </p-chip>
-                                            <div style="margin-left:15px;margin-top:3px" class="flex flex-row">
-                                                <div class="flex">
-                                                    <p-tag [value]="patient.gender" [severity]="patient.gender == 'Male' ? 'success' : 'danger'"></p-tag>
-                                                </div>
-                                                <div class="flex font-semibold text-sm mt-1 ml-2">
-                                                    <div>
-                                                        <div class="text-sm">{{ patient.dob | date: 'dd MMM yyyy' }}</div>
-                                                        <div class="text-xs">{{ patient.dobText }}</div>
+                        <p-button (click)="showDialogRoles('add'); roleName['name'] = null; roleName['id'] = null" icon="pi pi-plus-circle" label="Add Role" severity="secondary" styleClass="min-w-40" />
+                        <div class="main-card mt-2">
+                            <div class="grid">
+                                <div class="col-6 col-offset-4">
+                                    <div style="height: 365px; overflow-y: auto;">
+                                        <div *ngFor="let rls of settings_mng_roles">
+                                            <p-panel styleClass="mt-2">
+                                                <ng-template pTemplate="header">
+                                                    <div class="font-light text-gray-700">Role</div>
+                                                </ng-template>
+                                                <div style="width: 300px;">
+                                                    <div class="flex flex-row cursor-pointer" (click)="showDialogRoles('edit'); roleName['name'] = rls.name; roleName['id'] = rls.id">
+                                                        <div class="font-bold text-green-600 ml-2">
+                                                            {{ rls.name }}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <!-- <p-tag [value]="patient.gender" [severity]="patient.gender == 'Male' ? 'success' : 'danger'"></p-tag>
-                                    <div class="flex flex-row justify-content-between font-semibold text-sm mt-1 ml-2">
-                                        {{ patient.dob | date: 'dd MMM yyyy' }}
+                                            </p-panel>
+                                        </div>
                                     </div>
-                                    {{ patient.dobText }} -->
-                                        </td>
-                                        <td class="text-right">
-                                            {{ patient.phoneNumber }}
-                                        </td>
-                                        <td>
-                                            {{ patient.email }}
-                                        </td>
-                                        <td>
-                                            <p-tag [value]="patient.bloodGroup" [severity]="'warn'"></p-tag>
-                                        </td>
-                                        <td>
-                                            {{ patient.mrnNo }}
-                                        </td>
-                                        <td>
-                                            <p-tag [value]="patient.status" [severity]="patient.status == 'Active' ? 'success' : patient.status == 'Inactive' ? 'warn' : 'danger'"></p-tag>
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                                <ng-template #emptymessage>
-                                    <tr>
-                                        <td colspan="6" class="text-center">No Registrations found.</td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
+                                </div>
+                            </div>
                         </div>
                     </p-tabpanel>
                     <p-tabpanel value="4">
                         <!--settings_mng_documents -->
-                        <div style="height: 441px; overflow-y: auto;">
-                            <p-table [value]="settings_mng_documents" stripedRows>
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th style="min-width:1rem"></th>
-                                        <th style="min-width:20rem">Patient Name</th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Mobile
-                                                <p-columnFilter type="text" field="phoneNumber" display="menu" />
-                                            </div>
-                                        </th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Email
-                                                <p-columnFilter type="text" field="email" display="menu" />
-                                            </div>
-                                        </th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Blood Group
-                                                <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
-                                                <ng-template #filter let-values let-filter="filterCallback">
-                                                    <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
-                                                        <ng-template let-option #item>
-                                                            <p-tag [value]="option.value" severity="warn"></p-tag>
-                                                        </ng-template>
-                                                    </p-select>
+                        <p-button (click)="showDialog('add'); myDocName['myDocName'] = null; myDocName['docid'] = null" icon="pi pi-plus-circle" label="Add Document" severity="secondary" styleClass="min-w-40" />
+                        <div class="main-card mt-2">
+                            <div class="grid">
+                                <div class="col-6 col-offset-4">
+                                    <div style="height: 365px; overflow-y: auto;">
+                                        <div *ngFor="let document of settings_mng_documents">
+                                            <p-panel styleClass="mt-2">
+                                                <ng-template pTemplate="header">
+                                                    <div class="font-light text-gray-700">Document</div>
                                                 </ng-template>
-                                            </p-columnFilter> -->
-                                            </div>
-                                        </th>
-                                        <th style="min-width:4rem">MRN No.</th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Status
-                                                <!-- <p-columnFilter field="status" matchMode="equals" display="menu">
-                                                <ng-template #filter let-values let-filter="filterCallback">
-                                                    <p-select [(ngModel)]="value" [options]="status" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
-                                                        <ng-template let-option #item>
-                                                            <p-tag [value]="option.value" [severity]="option.label == 'Active' ? 'success' : option.label == 'Inactive' ? 'warn' : 'danger'"></p-tag>
-                                                        </ng-template>
-                                                    </p-select>
-                                                </ng-template>
-                                            </p-columnFilter> -->
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-patient>
-                                    <tr>
-                                        <td class="text-center">
-                                            <p-tag [value]="patient.admissionType" [severity]="_productService.getSeverityForAdmissionType(patient.admissionType)"></p-tag>
-                                        </td>
-                                        <td>
-                                            <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
-                                                <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
-                                                    {{ patient.name.slice(0, 1) }}
-                                                </span>
-                                                <span class="ml-2 font-medium"> {{ patient.name }} </span>
-                                            </p-chip>
-                                            <div style="margin-left:15px;margin-top:3px" class="flex flex-row">
-                                                <div class="flex">
-                                                    <p-tag [value]="patient.gender" [severity]="patient.gender == 'Male' ? 'success' : 'danger'"></p-tag>
-                                                </div>
-                                                <div class="flex font-semibold text-sm mt-1 ml-2">
-                                                    <div>
-                                                        <div class="text-sm">{{ patient.dob | date: 'dd MMM yyyy' }}</div>
-                                                        <div class="text-xs">{{ patient.dobText }}</div>
+                                                <div style="width: 300px;">
+                                                    <div class="flex flex-row cursor-pointer" (click)="showDialog('edit'); myDocName['myDocName'] = document.docname; myDocName['docid'] = document.docid">
+                                                        <div class="font-bold text-green-600 ml-2">
+                                                            {{ document.docname }}
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            <!-- <p-tag [value]="patient.gender" [severity]="patient.gender == 'Male' ? 'success' : 'danger'"></p-tag>
-                                    <div class="flex flex-row justify-content-between font-semibold text-sm mt-1 ml-2">
-                                        {{ patient.dob | date: 'dd MMM yyyy' }}
+                                            </p-panel>
+                                        </div>
                                     </div>
-                                    {{ patient.dobText }} -->
-                                        </td>
-                                        <td class="text-right">
-                                            {{ patient.phoneNumber }}
-                                        </td>
-                                        <td>
-                                            {{ patient.email }}
-                                        </td>
-                                        <td>
-                                            <p-tag [value]="patient.bloodGroup" [severity]="'warn'"></p-tag>
-                                        </td>
-                                        <td>
-                                            {{ patient.mrnNo }}
-                                        </td>
-                                        <td>
-                                            <p-tag [value]="patient.status" [severity]="patient.status == 'Active' ? 'success' : patient.status == 'Inactive' ? 'warn' : 'danger'"></p-tag>
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                                <ng-template #emptymessage>
-                                    <tr>
-                                        <td colspan="6" class="text-center">No Registrations found.</td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
+                                </div>
+                            </div>
                         </div>
                     </p-tabpanel>
                 </p-tabpanels>
             </p-tabs>
+
+            <p-dialog [header]="mode == 'add' ? 'Add a Document' : 'Editing Document'" [modal]="true" [(visible)]="isvisible" position="right" [style]="{ width: '25rem' }">
+                <!-- <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span> -->
+                <div class="flex items-center gap-4 mb-4">
+                    <label for="username" class="font-semibold w-10">Name</label>
+                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="myDocName['myDocName']" />
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <p-button label="Cancel" severity="secondary" (click)="isvisible = false" />
+                    <p-button label="Save" (click)="saveDocument()" [disabled]="[null, ''].includes(myDocName['myDocName'])" />
+                </div>
+                <p-message [severity]="isDocSuccess ? 'success' : 'warn'" *ngIf="isDocSuccess">
+                    {{ isDocSuccess ? 'Document Added' : 'Unable to process request' }}
+                </p-message>
+            </p-dialog>
+
+            <p-dialog [header]="mode == 'add' ? 'Add a Role' : 'Editing Role'" [modal]="true" [(visible)]="isRolevisible" position="right" [style]="{ width: '25rem' }">
+                <!-- <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span> -->
+                <div class="flex items-center gap-4 mb-4">
+                    <label for="username" class="font-semibold w-10">Name</label>
+                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="roleName['name']" />
+                </div>
+
+                <div class="flex justify-end gap-2">
+                    <p-button label="Cancel" severity="secondary" (click)="isRolevisible = false" />
+                    <p-button label="Save" (click)="saveRoleDocument()" [disabled]="[null, ''].includes(roleName['name'])" />
+                </div>
+                <p-message [severity]="isRoleSuccess ? 'success' : 'warn'" *ngIf="isRoleSuccess">
+                    {{ isDocSuccess ? 'Role Added' : 'Unable to process request' }}
+                </p-message>
+            </p-dialog>
         </div>
         <style>
             .main-card {
@@ -553,7 +450,12 @@ export class settings implements OnInit {
     public loginSerivce = inject(LoginserviceService);
     public usersDropDownInfo: any = [];
     public dropDownLoad: boolean = false;
-
+    public isvisible: boolean = false;
+    public isRolevisible: boolean = false;
+    public myDocName: any = { myDocName: null, docid: null };
+    public roleName: any = { name: null, id: null };
+    public isDocSuccess: any = false;
+    public isRoleSuccess: any = false;
     public getAllDocs: any = [];
     // grids
     public selectedUserForDocPermission: any = null;
@@ -577,6 +479,8 @@ export class settings implements OnInit {
         }
         this.dropDownLoad = false;
         this.getAllDocs = await this.loginSerivce.getDoc();
+        this.settings_mng_roles = await this.loginSerivce.getRoles();
+        this.settings_mng_documents = await this.loginSerivce.getDoc();
         this.getAllDocs.forEach((ele: any) => (ele.isDoc = false));
     }
 
@@ -658,6 +562,51 @@ export class settings implements OnInit {
         const permissions = await this.loginSerivce.saveGrantDocAccessPermissions(event);
         if (permissions) {
             await this.onUserSelected({ value: event['userId'] });
+        }
+    }
+    public mode: string = '';
+
+    showDialog(mode: string) {
+        this.isvisible = true;
+        this.mode = mode;
+    }
+
+    async saveDocument() {
+        if (this.mode == 'add') {
+        } else {
+        }
+        this.myDocName['myDocName'] = this.roleName['myDocName'].trim();
+        const docAdd = await this.loginSerivce.saveDocument(this.myDocName);
+        if (docAdd) {
+            this.isDocSuccess = true;
+            this.isvisible = false;
+            this.settings_mng_documents = await this.loginSerivce.getDoc();
+            this.myDocName['myDocName'] = null;
+            this.myDocName['docid'] = null;
+        } else {
+            this.isDocSuccess = false;
+        }
+    }
+
+    showDialogRoles(mode: string) {
+        this.isRolevisible = true;
+        this.mode = mode;
+    }
+
+    async saveRoleDocument() {
+        if (this.mode == 'add') {
+        } else {
+        }
+        this.roleName['name'] = this.roleName['name'].trim();
+        const roleAddorEdit = await this.loginSerivce.saveRole(this.roleName);
+        if (roleAddorEdit) {
+            this.isRoleSuccess = true;
+            this.isRolevisible = false;
+            this.settings_mng_roles = await this.loginSerivce.getRoles();
+            this.roleName['name'] = null;
+            this.roleName['id'] = null;
+        } else {
+            this.isRoleSuccess = false;
         }
     }
 }
