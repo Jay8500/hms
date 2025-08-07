@@ -63,6 +63,8 @@ export class AppMenu {
                     // { label: 'Employees', icon: 'pi pi-fw pi-id-card', routerLink: ['/home/uikit/formlayout'] },
 
                     { label: 'Registrations', icon: 'pi pi-fw pi-pen-to-square', routerLink: ['/home/hms/registration'] },
+                    { label: 'Appointment', icon: 'pi pi-fw pi-pen-to-square', routerLink: ['/home/hms/appointment'] },
+                    { label: 'Billing', icon: 'pi pi-fw pi-pen-to-square', routerLink: ['/home/hms/billing'] },
                     // { label: 'IP Admissions', icon: 'pi pi-fw pi-list', routerLink: ['/home/uikit/ip-admissions'] },
                     { label: 'Employees Info', icon: 'pi pi-fw pi-table', routerLink: ['/home/hms/employeelist'] },
                     { label: 'Inventory Management', icon: 'pi pi-fw pi-table', routerLink: ['/home/hms/inventory'] },
