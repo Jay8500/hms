@@ -30,7 +30,24 @@ interface Patient {
 @Component({
     selector: 'app-formlayout-demo',
     standalone: true,
-    imports: [CommonModule, InputTextModule, ChipModule, FluidModule, ButtonModule, SelectModule, FormsModule, TextareaModule, NameInitialsPipe, RadioButtonModule, SelectButtonModule, CalendarModule, InputMaskModule, TableModule, TabsModule, TagModule],
+    imports: [
+        CommonModule,
+        InputTextModule,
+        ChipModule,
+        FluidModule,
+        ButtonModule,
+        SelectModule,
+        FormsModule,
+        TextareaModule,
+        NameInitialsPipe,
+        RadioButtonModule,
+        SelectButtonModule,
+        CalendarModule,
+        InputMaskModule,
+        TableModule,
+        TabsModule,
+        TagModule
+    ],
     providers: [ProductService],
     template: ` <div class="card">
         <p-tabs value="0">
@@ -40,7 +57,7 @@ interface Patient {
             </p-tablist>
             <p-tabpanels>
                 <p-tabpanel value="0">
-                    <div style="height: 441px; overflow-y: auto;">
+                    <div style="height: 365px; overflow-y: auto;">
                         <p-table [value]="patients" stripedRows>
                             <ng-template pTemplate="header">
                                 <tr>
@@ -96,13 +113,12 @@ interface Patient {
                             <ng-template pTemplate="body" let-patient>
                                 <tr>
                                     <td class="text-center">
-                                        <p-tag [value]="patient.admissionType=='1'?'IP':'OP'" [severity]="_productService.getSeverityForAdmissionType(patient.admissionType)"></p-tag>
+                                        <p-tag [value]="patient.admissionType == '1' ? 'IP' : 'OP'" [severity]="_productService.getSeverityForAdmissionType(patient.admissionType)"></p-tag>
                                     </td>
                                     <td>
                                         <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
-                                            <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center"
-                                            style="font-size: xx-small;">
-                                                {{ patient.name |nameInitials }}
+                                            <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center" style="font-size: xx-small;">
+                                                {{ patient.name | nameInitials }}
                                             </span>
                                             <span class="ml-2 font-medium"> {{ patient.name }} </span>
                                         </p-chip>
@@ -151,10 +167,9 @@ interface Patient {
                 </p-tabpanel>
                 <p-tabpanel value="1">
                     <p-fluid>
-                        <div class="flex mt-8">
-                            <div class="card flex flex-col gap-6 w-full">
-                                <div class="font-semibold text-xl">Registration</div>
-                                <div class="flex flex-col md:flex-row gap-6">
+                        <div class="flex mt-0">
+                            <div class="card flex flex-col gap-3 w-full">
+                                <div class="flex flex-col md:flex-row gap-2">
                                     <div class="flex flex-wrap gap-2 w-full">
                                         <label for="firstname2">Firstname</label>
                                         <input pInputText id="firstname2" type="text" [(ngModel)]="firstname" />
@@ -167,70 +182,32 @@ interface Patient {
                                         <label for="lastname2">Lastname</label>
                                         <input pInputText id="lastname2" type="text" [(ngModel)]="lastname" />
                                     </div>
+                                    <!-- <div class="flex flex-wrap gap-2 w-full">
+                                        <label for="lastname2">Full Name</label>
+                                        <input pInputText id="lastname2" type="text" [(ngModel)]="lastname" [disabled]="true" />
+                                    </div> -->
                                 </div>
-
-                                <div class="flex flex-wrap">
-                                    <label for="address">Address</label>
-                                    <textarea pTextarea id="address" rows="4" [(ngModel)]="address"></textarea>
-                                </div>
-
-                                <div class="flex flex-col md:flex-row gap-6">
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="state">State</label>
-                                        <p-select id="state" [(ngModel)]="state" [options]="states" optionLabel="name" placeholder="Select State" class="w-full"></p-select>
-                                    </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="zip">Zip</label>
-                                        <input pInputText id="zip" type="text" [(ngModel)]="zip" />
-                                    </div>
-                                </div>
-
-                                <div class="flex flex-col md:flex-row gap-6">
-                                    <div class="flex flex-wrap gap-2 w-full">
+                                <div class="flex flex-col md:flex-row gap-2">
+                                    <div class="flex flex-col flex-wrap gap-2 w-full">
                                         <label>Admission Type</label>
-                                        <div class="flex gap-4">
+                                        <div class="flex  gap-2">
                                             <div class="flex align-items-center">
                                                 <p-radioButton name="admissionType" value="1" [(ngModel)]="admissionType" inputId="op"></p-radioButton>
-                                                <label for="op" class="ml-2">OP (Outpatient)</label>
+                                                <label for="op" class="ml-2">OP</label>
                                             </div>
                                             <div class="flex align-items-center">
                                                 <p-radioButton name="admissionType" value="2" [(ngModel)]="admissionType" inputId="ip"></p-radioButton>
-                                                <label for="ip" class="ml-2">IP (Inpatient)</label>
+                                                <label for="ip" class="ml-2">IP</label>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
+                                    <div class="flex flex-col gap-2 w-full">
                                         <label for="dob">Date of Birth</label>
                                         <p-calendar inputId="dob" [(ngModel)]="dob" [showIcon]="true" dateFormat="mm/dd/yy"></p-calendar>
                                     </div>
-                                </div>
-
-                                <div class="flex flex-col md:flex-row gap-6">
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="phoneNumber">Phone Number</label>
-                                        <p-inputMask id="phoneNumber" [(ngModel)]="phoneNumber" mask="(+91) 999-999-9999"></p-inputMask>
-                                    </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="email">Email</label>
-                                        <input pInputText id="email" type="email" [(ngModel)]="email" />
-                                    </div>
-                                </div>
-
-                                <div class="flex flex-col md:flex-row gap-6">
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="emergencyContactName">Emergency Contact Name</label>
-                                        <input pInputText id="emergencyContactName" type="text" [(ngModel)]="emergencyContactName" />
-                                    </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
-                                        <label for="emergencyContactNumber">Emergency Contact Number</label>
-                                        <input pInputText id="emergencyContactNumber" type="text" [(ngModel)]="emergencyContactNumber" />
-                                    </div>
-                                </div>
-
-                                <div class="flex flex-col md:flex-row gap-6">
                                     <div class="flex flex-col gap-2 w-full">
                                         <label>Gender</label>
-                                        <div class="flex gap-4 mt-2">
+                                        <div class="flex gap-1 mt-3">
                                             <div class="flex align-items-center">
                                                 <p-radioButton name="gender" value="1" [(ngModel)]="gender" inputId="male"></p-radioButton>
                                                 <label for="male" class="ml-2">Male</label>
@@ -245,15 +222,47 @@ interface Patient {
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="flex flex-col gap-2 w-full">
+                                        <label for="phoneNumber">Phone Number</label>
+                                        <!-- <p-inputMask id="phoneNumber" [(ngModel)]="phoneNumber" mask="(+91) 999-999-9999"></p-inputMask> -->
+                                        <input pInputText id="phoneNumber" type="text" [(ngModel)]="phoneNumber" />
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 w-full">
+                                        <label for="email">Email</label>
+                                        <input pInputText id="email" type="email" [(ngModel)]="email" />
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col md:flex-row gap-2">
                                     <div class="flex flex-wrap gap-2 w-full">
                                         <label for="bloodGroup">Blood Group</label>
                                         <p-select id="bloodGroup" [(ngModel)]="bloodGroup" [options]="bloodGroups" placeholder="Select Blood Group" class="w-full"></p-select>
                                     </div>
+                                    <div class="flex flex-wrap gap-2 w-full">
+                                        <label for="state">State</label>
+                                        <p-select id="state" [(ngModel)]="state" [options]="states" optionLabel="name" placeholder="Select State" class="w-full"></p-select>
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 w-full">
+                                        <label for="zip">Zip</label>
+                                        <input pInputText id="zip" type="text" [(ngModel)]="zip" />
+                                    </div>
                                 </div>
-                                <div class="flex flex-col md:flex-row gap-6">
+                                <div class="flex flex-wrap">
+                                    <label for="address">Address</label>
+                                    <textarea pTextarea id="address" rows="4" [(ngModel)]="address"></textarea>
+                                </div>
+                                <div class="flex flex-col md:flex-row gap-2">
+                                    <div class="flex flex-wrap gap-2 w-full">
+                                        <label for="emergencyContactName">Emergency Contact Name</label>
+                                        <input pInputText id="emergencyContactName" type="text" [(ngModel)]="emergencyContactName" />
+                                    </div>
+                                    <div class="flex flex-wrap gap-2 w-full">
+                                        <label for="emergencyContactNumber">Emergency Contact Number</label>
+                                        <input pInputText id="emergencyContactNumber" type="text" [(ngModel)]="emergencyContactNumber" />
+                                    </div>
                                     <div class="flex flex-col gap-2 w-full">
                                         <label for="mrn">MRN (Medical Record Number)</label>
-                                        <input pInputText id="mrn" type="text" [(ngModel)]="mrn" style="width: 150px;" />
+                                        <input pInputText id="mrn" type="text" [(ngModel)]="mrn" />
                                     </div>
                                     <div class="flex flex-wrap gap-2 w-full">
                                         <label for="occupation">Occupation</label>
@@ -261,7 +270,7 @@ interface Patient {
                                     </div>
                                 </div>
 
-                                <div class="flex flex-col md:flex-row gap-6">
+                                <div class="flex flex-col md:flex-row gap-2">
                                     <div class="flex flex-wrap gap-2 w-full">
                                         <label for="insuranceProvider">Insurance Provider</label>
                                         <input pInputText id="insuranceProvider" type="text" [(ngModel)]="insuranceProvider" />
@@ -270,30 +279,26 @@ interface Patient {
                                         <label for="insuranceNumber">Insurance Number</label>
                                         <input pInputText id="insuranceNumber" type="text" [(ngModel)]="insuranceNumber" />
                                     </div>
-                                </div>
-                                <div class="flex flex-col md:flex-row gap-6" *ngIf="admissionType === '1'">
-                                    <div class="flex flex-wrap gap-2 w-full">
+                                    <div class="flex flex-wrap gap-2 w-full" *ngIf="admissionType === '1'">
                                         <label for="admittingDoctor">Admitting Doctor</label>
                                         <input pInputText id="admittingDoctor" type="text" [(ngModel)]="admittingDoctor" />
                                     </div>
-                                    <div class="flex flex-wrap gap-2 w-full">
+                                    <div class="flex flex-wrap gap-2 w-full" *ngIf="admissionType === '1'">
                                         <label for="roomNumber">Room Number</label>
-                                        <input pInputText id="roomNumber" type="text" [(ngModel)]="roomNumber" style="width: 100px;" />
+                                        <input pInputText id="roomNumber" type="text" [(ngModel)]="roomNumber" />
                                     </div>
-                                </div>
 
-                                <div class="flex flex-col md:flex-row gap-6" *ngIf="admissionType === '2'">
-                                    <div class="flex flex-wrap gap-2 w-full">
+                                    <div class="flex flex-wrap gap-2 w-full" *ngIf="admissionType === '2'">
                                         <label for="visitingDepartment">Visiting Department</label>
                                         <input pInputText id="visitingDepartment" type="text" [(ngModel)]="visitingDepartment" />
                                     </div>
-                                    <div class="flex flex-col gap-2 w-full">
+                                    <div class="flex flex-wrap gap-2 w-full" *ngIf="admissionType === '2'">
                                         <label for="appointmentTime">Appointment Time</label>
-                                        <p-calendar inputId="appointmentTime" [(ngModel)]="appointmentTime" [timeOnly]="true" hourFormat="12"></p-calendar>
+                                        <p-calendar inputId="appointmentTime" [(ngModel)]="appointmentTime" styleClass="w-full" [timeOnly]="true" hourFormat="12"></p-calendar>
                                     </div>
                                 </div>
-                                <div class="flex gap-4 justify-conent-between">
-                                    <button pButton label="Register" class="p-button-sm" (click)="register()" ></button>
+                                <div class="flex gap-2 justify-conent-between">
+                                    <button pButton label="Register" class="p-button-sm" (click)="register()" [disabled]="isFormDisabled()"></button>
                                     <button pButton label="Cancel" (click)="cancel()" [disabled]="isFormDisabled()" class="p-button-sm p-button-secondary ml-2"></button>
                                 </div>
                             </div>
@@ -370,40 +375,38 @@ export class FormLayoutDemo implements OnInit {
     appointmentTime: Date | undefined;
 
     async register() {
-        const saveRegistration = await this.loginSerivce.saveRegistration(
-            {
-                "patient_reg_id": "0",
-                "patient_reg_rev_no": "0",
-                "patient_reg_cd": "RECORD",
-                "first_name": "Nandauma",
-                "last_name": "Gorla",
-                "middle_name": "Krishna",
-                "address": "bpl",
-                "state_id": "2",
-                "zipcode": "60986",
-                "addmission_type_id": "2",
-                "date_of_birth": "2025-aug-09",
-                "phone_number": "8787878787",
-                "email": "karthip@gmail.com",
-                "emer_contact_number": "7878687868",
-                "emer_contact_name": "sahya",
-                "gender_id": "2",
-                "blood_group_id": "4",
-                "mr_number": "test mnr",
-                "occupation_id": "1",
-                "insurance_provider": "test",
-                "insurance_number": "test mnr",
-                "visiting_dept_id": "2",
-                "appoint_time": "2024-09-09",
-                "create_by": 1,
-                "record_status": "A"
-            }
-        );
+        const saveRegistration = await this.loginSerivce.saveRegistration({
+            patient_reg_id: '0',
+            patient_reg_rev_no: '0',
+            patient_reg_cd: 'RECORD',
+            first_name: 'Nandauma',
+            last_name: 'Gorla',
+            middle_name: 'Krishna',
+            address: 'bpl',
+            state_id: '2',
+            zipcode: '60986',
+            addmission_type_id: '2',
+            date_of_birth: '2025-aug-09',
+            phone_number: '8787878787',
+            email: 'karthip@gmail.com',
+            emer_contact_number: '7878687868',
+            emer_contact_name: 'sahya',
+            gender_id: '2',
+            blood_group_id: '4',
+            mr_number: 'test mnr',
+            occupation_id: '1',
+            insurance_provider: 'test',
+            insurance_number: 'test mnr',
+            visiting_dept_id: '2',
+            appoint_time: '2024-09-09',
+            create_by: 1,
+            record_status: 'A'
+        });
         if (saveRegistration) {
         }
     }
 
-    cancel() { }
+    cancel() {}
 
     calculateAge(dob: Date): any {
         const today = new Date();
@@ -472,31 +475,31 @@ export class FormLayoutDemo implements OnInit {
     }
     public filteredPatients: any;
     async ngOnInit() {
-        let getRegistrations: any = await this.loginSerivce.getRegistrations({ par_flag: "g" });
+        let getRegistrations: any = await this.loginSerivce.getRegistrations({ par_flag: 'g' });
         if (getRegistrations.length > 0) {
             getRegistrations.forEach((ele: any) => {
                 let registrationsInfo: any = {
-                    "name": `${ele.first_name} ${ele.middle_name} ${ele.last_name}`,
-                    "gender": ele.gender || null,
-                    "dob": new Date(ele.date_of_birth),
-                    "dobText": this.calculateAge(new Date(ele.date_of_birth)),
-                    "admissionType": ele.addmission_type_id.toString(),
-                    "email": ele.email,
-                    "phoneNumber": ele.phone_number,
-                    "bloodGroup": 'B+',//blood_group_id
-                    "mrnNo": ele.mrn || null,
-                    "status": 'Active',
-                    "occupation": ele.occupation || null,
-                    "insurance_provider": ele.insurance_provider || null,
-                    "insurance_number": ele.insurance_number || null,
-                    "visiting_department": ele.visiting_department || null,
-                    "appointment_time": ele.appointment_time || null,
-                    "created_at": ele.created_at != null ? new Date(ele.created_at) : null,
-                    "updated_at": ele.updated_at != null ? new Date(ele.updated_at) : null
+                    name: `${ele.first_name} ${ele.middle_name} ${ele.last_name}`,
+                    gender: ele.gender || null,
+                    dob: new Date(ele.date_of_birth),
+                    dobText: this.calculateAge(new Date(ele.date_of_birth)),
+                    admissionType: ele.addmission_type_id.toString(),
+                    email: ele.email,
+                    phoneNumber: ele.phone_number,
+                    bloodGroup: 'B+', //blood_group_id
+                    mrnNo: ele.mrn || null,
+                    status: 'Active',
+                    occupation: ele.occupation || null,
+                    insurance_provider: ele.insurance_provider || null,
+                    insurance_number: ele.insurance_number || null,
+                    visiting_department: ele.visiting_department || null,
+                    appointment_time: ele.appointment_time || null,
+                    created_at: ele.created_at != null ? new Date(ele.created_at) : null,
+                    updated_at: ele.updated_at != null ? new Date(ele.updated_at) : null
                 };
-                this.patients.push(registrationsInfo)
+                this.patients.push(registrationsInfo);
             });
             this.filteredPatients = JSON.stringify(this.patients);
-        };
+        }
     }
 }
