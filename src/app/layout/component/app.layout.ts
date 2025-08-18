@@ -20,6 +20,10 @@ import { LayoutService } from '../service/layout.service';
             </div>
             <app-footer></app-footer>
         </div>
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 85224ca968c9d0aed95a6e1cf5017302255df522
         <div class="layout-mask animate-fadein"></div>
     </div> `
 })

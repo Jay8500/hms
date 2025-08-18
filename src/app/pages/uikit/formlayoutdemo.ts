@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
@@ -15,6 +15,8 @@ import { ProductService } from '../service/product.service';
 import { TagModule } from 'primeng/tag';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ChipModule } from 'primeng/chip';
+import { NameInitialsPipe } from '../../name-initials.pipe';
+import { LoginserviceService } from '../service/loginservice.service';
 interface State {
     name: string;
     code: string;
@@ -28,7 +30,7 @@ interface Patient {
 @Component({
     selector: 'app-formlayout-demo',
     standalone: true,
-    imports: [CommonModule, InputTextModule, ChipModule, FluidModule, ButtonModule, SelectModule, FormsModule, TextareaModule, RadioButtonModule, SelectButtonModule, CalendarModule, InputMaskModule, TableModule, TabsModule, TagModule],
+    imports: [CommonModule, InputTextModule, ChipModule, FluidModule, ButtonModule, SelectModule, FormsModule, TextareaModule, NameInitialsPipe, RadioButtonModule, SelectButtonModule, CalendarModule, InputMaskModule, TableModule, TabsModule, TagModule],
     providers: [ProductService],
     template: ` <div class="card">
         <p-tabs value="0">
@@ -98,8 +100,9 @@ interface Patient {
                                     </td>
                                     <td>
                                         <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
-                                            <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
-                                                {{ patient.name.slice(0, 1) }}
+                                            <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center"
+                                            style="font-size: xx-small;">
+                                                {{ patient.name |nameInitials }}
                                             </span>
                                             <span class="ml-2 font-medium"> {{ patient.name }} </span>
                                         </p-chip>
@@ -225,9 +228,9 @@ interface Patient {
                                 </div>
 
                                 <div class="flex flex-col md:flex-row gap-6">
-                                    <div class="flex flex-wrap gap-2 w-full">
+                                    <div class="flex flex-col gap-2 w-full">
                                         <label>Gender</label>
-                                        <div class="flex gap-4">
+                                        <div class="flex gap-4 mt-2">
                                             <div class="flex align-items-center">
                                                 <p-radioButton name="gender" value="Male" [(ngModel)]="gender" inputId="male"></p-radioButton>
                                                 <label for="male" class="ml-2">Male</label>
@@ -301,8 +304,9 @@ interface Patient {
         </p-tabs>
     </div>`
 })
-export class FormLayoutDemo {
+export class FormLayoutDemo implements OnInit {
     public _productService = inject(ProductService);
+    public loginSerivce = inject(LoginserviceService);
 
     stateOptions: any[] = [
         { label: 'All', value: 'all' },
@@ -310,71 +314,7 @@ export class FormLayoutDemo {
         { label: 'OP', value: 'OP' }
     ];
     value: string = 'all';
-    patients: any = [
-        {
-            name: 'Jay',
-            gender: 'Male',
-            dob: new Date(1995, 9, 31),
-            dobText: this.calculateAge(new Date(1995, 9, 31)),
-            admissionType: 'OP',
-            email: 'j@gmail.com',
-            phoneNumber: '8989898989',
-            bloodGroup: 'B+',
-            mrnNo: '345345345345345',
-            status: 'Active'
-        },
-        {
-            name: 'John Doe',
-            gender: 'Male',
-            dob: new Date(2000, 5, 18),
-            dobText: this.calculateAge(new Date(2000, 5, 18)),
-            admissionType: 'OP',
-            email: 'jhondoe@gmail.com',
-            phoneNumber: '8989898989',
-            bloodGroup: 'B+',
-            mrnNo: '345345345345345',
-            status: 'Active'
-        },
-        {
-            name: 'Jane',
-            gender: 'Female',
-            dob: new Date(1994, 10, 20),
-            dobText: this.calculateAge(new Date(1994, 10, 20)),
-            admissionType: 'IP',
-            email: 'jane@gmail.com',
-            phoneNumber: '7845454845',
-            bloodGroup: 'O+',
-            mrnNo: '785345345345345',
-            status: 'Active'
-        },
-        {
-            name: 'Karthika',
-            gender: 'Female',
-            dob: new Date(2000, 10, 20),
-            dobText: this.calculateAge(new Date(2000, 10, 20)),
-
-            admissionType: 'IP',
-            email: 'karthika@gmail.com',
-            phoneNumber: '7845454845',
-            bloodGroup: 'O+',
-            mrnNo: '785345345345345',
-            status: 'Active'
-        },
-        {
-            name: 'Deepika',
-            gender: 'Female',
-            dob: new Date(2004, 10, 20),
-            dobText: this.calculateAge(new Date(2004, 10, 20)),
-            admissionType: 'IP',
-            email: 'deepika@gmail.com',
-            phoneNumber: '9845454845',
-            bloodGroup: 'O+',
-            mrnNo: '785345345345345',
-            status: 'Inactive'
-        }
-        // Add more sample patient data here
-    ];
-    filteredPatients: any = JSON.stringify(this.patients);
+    patients: any = [];
     dropdownItems = [
         { name: 'Option 1', code: 'Option 1' },
         { name: 'Option 2', code: 'Option 2' },
@@ -449,7 +389,7 @@ export class FormLayoutDemo {
         // You can send this data to your backend API
     }
 
-    cancel() {}
+    cancel() { }
 
     calculateAge(dob: Date): any {
         const today = new Date();
@@ -516,5 +456,34 @@ export class FormLayoutDemo {
             this.visitingDepartment &&
             this.appointmentTime
         );
+    }
+    public filteredPatients: any;
+    async ngOnInit() {
+        let getRegistrationsInfo: any = await this.loginSerivce.getPatientsByDatesorNonDates(null);
+        if (getRegistrationsInfo.length > 0) {
+            getRegistrationsInfo.forEach((ele: any) => {
+                let registrationsInfo: any = {
+                    "name": `${ele.firstname} ${ele.middlename} ${ele.lastname}`,
+                    "gender": ele.gender,
+                    "dob": new Date(ele.date_of_birth),
+                    "dobText": this.calculateAge(new Date(ele.date_of_birth)),
+                    "admissionType": ele.admission_type,
+                    "email": ele.email,
+                    "phoneNumber": ele.phone_number,
+                    "bloodGroup": 'B+',//blood_group_id
+                    "mrnNo": ele.mrn,
+                    "status": 'Active',
+                    "occupation": ele.occupation,
+                    "insurance_provider": ele.insurance_provider,
+                    "insurance_number": ele.insurance_number,
+                    "visiting_department": ele.visiting_department,
+                    "appointment_time": ele.appointment_time,
+                    "created_at": new Date(ele.created_at),
+                    "updated_at": new Date(ele.updated_at)
+                };
+                this.patients.push(registrationsInfo)
+            });
+            this.filteredPatients = JSON.stringify(this.patients);
+        };
     }
 }

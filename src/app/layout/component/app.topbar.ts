@@ -8,11 +8,13 @@ import { LayoutService } from '../service/layout.service';
 import { Menu } from 'primeng/menu';
 import { LoginserviceService } from '../../pages/service/loginservice.service';
 import { ButtonModule } from 'primeng/button';
+import { ChipModule } from 'primeng/chip';
+import { NameInitialsPipe } from '../../name-initials.pipe';
 // AppConfigurator
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [CommonModule, StyleClassModule, Menu, ButtonModule],
+    imports: [CommonModule, StyleClassModule, Menu, ButtonModule, ChipModule, NameInitialsPipe],
     template: ` <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
@@ -39,15 +41,15 @@ import { ButtonModule } from 'primeng/button';
                 <span>HMS</span>
             </a>
         </div>
-
         <div class="layout-topbar-actions">
-            <!-- <div class="layout-topbar-menu lg:block"> -->
-            <!-- <div class="layout-topbar-menu-content"> -->
-            <p-button label="Emails" icon="pi pi-user" class=" cursor-pointer" [label]="loginSer.getLocalKeys('username') | uppercase" (click)="menu.toggle($event)" />
-            <p-menu #menu [model]="itemss" [popup]="true" />
+            <p-chip class="!py-0 !pl-0 !pr-2 cursor-pointer"  (click)="menu.toggle($event)" >
+                                            <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
+                                                {{ loginSer.getLocalKeys('username')|nameInitials}}
+                                            </span>
+                                            <span class="font-medium"> {{ loginSer.getLocalKeys('username') }} </span>
+                                        </p-chip>
+                                        <p-menu #menu [model]="itemss" [popup]="true" />
         </div>
-        <!-- </div> -->
-        <!-- </div> -->
     </div>`
 })
 export class AppTopbar {
@@ -62,10 +64,10 @@ export class AppTopbar {
             {
                 label: 'Manage',
                 items: [
-                    {
-                        label: 'Settings',
-                        icon: 'pi pi-cog'
-                    },
+                    // {
+                    //     label: 'Settings',
+                    //     icon: 'pi pi-cog'
+                    // },
                     {
                         label: 'Logout',
                         icon: 'pi pi-sign-out',
