@@ -266,4 +266,25 @@ export class LoginserviceService {
         else getData = data;
         return getData;
     }
+
+    async getRegistrations(params: any) {
+        let getData = null;
+        let { data, error } = await this.supabase.rpc('upr_khims_get_patient_registration_info', {
+            par_flag: params['par_flag'] || 'g',
+            par_patient_reg_id: params['par_patient_reg_id'] || null
+        });
+        if (error) getData = error;
+        else getData = data;
+        return getData;
+    }
+
+    async saveRegistration(mySaveJson: any) {
+        let getData = null;
+        let { data, error } = await this.supabase.rpc('upr_khims_patient_registration_info_json', {
+            par_patient_registration_info: [mySaveJson]
+        });
+        if (error) getData = error;
+        else getData = data;
+        return getData;
+    }
 }

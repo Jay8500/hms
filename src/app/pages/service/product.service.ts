@@ -1323,10 +1323,10 @@ export class ProductService {
 
     getSeverityForAdmissionType(admissionType: any): any {
         switch (admissionType) {
-            case 'IP':
+            case '1':
                 return 'success';
 
-            case 'OP':
+            case '2':
                 return 'info';
 
             default:

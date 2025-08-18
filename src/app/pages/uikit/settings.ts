@@ -434,7 +434,7 @@ interface Patient {
                                                 </ng-template>
                                                 <div style="width: 300px;">
                                                     <div class="flex flex-row cursor-pointer" (click)="showDialog('edit'); myDocName['myDocName'] = document.docname; myDocName['docid'] = document.docid">
-                                                        <div class="font-bold text-green-600 ml-2" [ngxTippy]="'Edit ' + document.name ">
+                                                        <div class="font-bold text-green-600 ml-2" [ngxTippy]="'Edit ' + document.docname ">
                                                             {{ document.docname }}
                                                         </div>
                                                     </div>

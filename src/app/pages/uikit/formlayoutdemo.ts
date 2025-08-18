@@ -96,7 +96,7 @@ interface Patient {
                             <ng-template pTemplate="body" let-patient>
                                 <tr>
                                     <td class="text-center">
-                                        <p-tag [value]="patient.admissionType" [severity]="_productService.getSeverityForAdmissionType(patient.admissionType)"></p-tag>
+                                        <p-tag [value]="patient.admissionType=='1'?'IP':'OP'" [severity]="_productService.getSeverityForAdmissionType(patient.admissionType)"></p-tag>
                                     </td>
                                     <td>
                                         <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
@@ -190,11 +190,11 @@ interface Patient {
                                         <label>Admission Type</label>
                                         <div class="flex gap-4">
                                             <div class="flex align-items-center">
-                                                <p-radioButton name="admissionType" value="OP" [(ngModel)]="admissionType" inputId="op"></p-radioButton>
+                                                <p-radioButton name="admissionType" value="1" [(ngModel)]="admissionType" inputId="op"></p-radioButton>
                                                 <label for="op" class="ml-2">OP (Outpatient)</label>
                                             </div>
                                             <div class="flex align-items-center">
-                                                <p-radioButton name="admissionType" value="IP" [(ngModel)]="admissionType" inputId="ip"></p-radioButton>
+                                                <p-radioButton name="admissionType" value="2" [(ngModel)]="admissionType" inputId="ip"></p-radioButton>
                                                 <label for="ip" class="ml-2">IP (Inpatient)</label>
                                             </div>
                                         </div>
@@ -232,15 +232,15 @@ interface Patient {
                                         <label>Gender</label>
                                         <div class="flex gap-4 mt-2">
                                             <div class="flex align-items-center">
-                                                <p-radioButton name="gender" value="Male" [(ngModel)]="gender" inputId="male"></p-radioButton>
+                                                <p-radioButton name="gender" value="1" [(ngModel)]="gender" inputId="male"></p-radioButton>
                                                 <label for="male" class="ml-2">Male</label>
                                             </div>
                                             <div class="flex align-items-center">
-                                                <p-radioButton name="gender" value="Female" [(ngModel)]="gender" inputId="female"></p-radioButton>
+                                                <p-radioButton name="gender" value="2" [(ngModel)]="gender" inputId="female"></p-radioButton>
                                                 <label for="female" class="ml-2">Female</label>
                                             </div>
                                             <div class="flex align-items-center">
-                                                <p-radioButton name="gender" value="Other" [(ngModel)]="gender" inputId="other"></p-radioButton>
+                                                <p-radioButton name="gender" value="3" [(ngModel)]="gender" inputId="other"></p-radioButton>
                                                 <label for="other" class="ml-2">Other</label>
                                             </div>
                                         </div>
@@ -271,7 +271,7 @@ interface Patient {
                                         <input pInputText id="insuranceNumber" type="text" [(ngModel)]="insuranceNumber" />
                                     </div>
                                 </div>
-                                <div class="flex flex-col md:flex-row gap-6" *ngIf="admissionType === 'IP'">
+                                <div class="flex flex-col md:flex-row gap-6" *ngIf="admissionType === '1'">
                                     <div class="flex flex-wrap gap-2 w-full">
                                         <label for="admittingDoctor">Admitting Doctor</label>
                                         <input pInputText id="admittingDoctor" type="text" [(ngModel)]="admittingDoctor" />
@@ -282,7 +282,7 @@ interface Patient {
                                     </div>
                                 </div>
 
-                                <div class="flex flex-col md:flex-row gap-6" *ngIf="admissionType === 'OP'">
+                                <div class="flex flex-col md:flex-row gap-6" *ngIf="admissionType === '2'">
                                     <div class="flex flex-wrap gap-2 w-full">
                                         <label for="visitingDepartment">Visiting Department</label>
                                         <input pInputText id="visitingDepartment" type="text" [(ngModel)]="visitingDepartment" />
@@ -293,7 +293,7 @@ interface Patient {
                                     </div>
                                 </div>
                                 <div class="flex gap-4 justify-conent-between">
-                                    <button pButton label="Register" class="p-button-sm" (click)="register()" [disabled]="isFormDisabled()"></button>
+                                    <button pButton label="Register" class="p-button-sm" (click)="register()" ></button>
                                     <button pButton label="Cancel" (click)="cancel()" [disabled]="isFormDisabled()" class="p-button-sm p-button-secondary ml-2"></button>
                                 </div>
                             </div>
@@ -310,8 +310,8 @@ export class FormLayoutDemo implements OnInit {
 
     stateOptions: any[] = [
         { label: 'All', value: 'all' },
-        { label: 'IP', value: 'IP' },
-        { label: 'OP', value: 'OP' }
+        { label: 'IP', value: '1' },
+        { label: 'OP', value: '2' }
     ];
     value: string = 'all';
     patients: any = [];
@@ -351,7 +351,7 @@ export class FormLayoutDemo implements OnInit {
     address: string = '';
     state: State | undefined; // { name: 'New York', code: 'NY' };
     zip: string = '';
-    admissionType: string = 'OP'; // Default to Outpatient
+    admissionType: string = '1'; // Default to Outpatient
     dob: Date | undefined; // new Date(1990, 0, 15);
     phoneNumber: string = '';
     email: string = '';
@@ -369,24 +369,38 @@ export class FormLayoutDemo implements OnInit {
     visitingDepartment: string = '';
     appointmentTime: Date | undefined;
 
-    register(): void {
-        // Implement your registration logic here
-        // console.log('Registration Data:', {
-        //     firstname: this.firstname,
-        //     lastname: this.lastname,
-        //     address: this.address,
-        //     state: this.state,
-        //     zip: this.zip,
-        //     admissionType: this.admissionType,
-        //     dob: this.dob,
-        //     phoneNumber: this.phoneNumber,
-        //     email: this.email,
-        //     emergencyContactName: this.emergencyContactName,
-        //     emergencyContactNumber: this.emergencyContactNumber,
-        //     gender: this.gender,
-        //     bloodGroup: this.bloodGroup,
-        // });
-        // You can send this data to your backend API
+    async register() {
+        const saveRegistration = await this.loginSerivce.saveRegistration(
+            {
+                "patient_reg_id": "0",
+                "patient_reg_rev_no": "0",
+                "patient_reg_cd": "RECORD",
+                "first_name": "Nandauma",
+                "last_name": "Gorla",
+                "middle_name": "Krishna",
+                "address": "bpl",
+                "state_id": "2",
+                "zipcode": "60986",
+                "addmission_type_id": "2",
+                "date_of_birth": "2025-aug-09",
+                "phone_number": "8787878787",
+                "email": "karthip@gmail.com",
+                "emer_contact_number": "7878687868",
+                "emer_contact_name": "sahya",
+                "gender_id": "2",
+                "blood_group_id": "4",
+                "mr_number": "test mnr",
+                "occupation_id": "1",
+                "insurance_provider": "test",
+                "insurance_number": "test mnr",
+                "visiting_dept_id": "2",
+                "appoint_time": "2024-09-09",
+                "create_by": 1,
+                "record_status": "A"
+            }
+        );
+        if (saveRegistration) {
+        }
     }
 
     cancel() { }
@@ -426,7 +440,6 @@ export class FormLayoutDemo implements OnInit {
         if (this.value === 'all') {
             this.patients = [...JSON.parse(this.filteredPatients)];
         } else {
-            console.log(this.filteredPatients);
             let parsePatients = JSON.parse(this.filteredPatients);
             this.patients = parsePatients.filter((patient: any) => patient.admissionType === this.value);
         }
@@ -459,27 +472,27 @@ export class FormLayoutDemo implements OnInit {
     }
     public filteredPatients: any;
     async ngOnInit() {
-        let getRegistrationsInfo: any = await this.loginSerivce.getPatientsByDatesorNonDates(null);
-        if (getRegistrationsInfo.length > 0) {
-            getRegistrationsInfo.forEach((ele: any) => {
+        let getRegistrations: any = await this.loginSerivce.getRegistrations({ par_flag: "g" });
+        if (getRegistrations.length > 0) {
+            getRegistrations.forEach((ele: any) => {
                 let registrationsInfo: any = {
-                    "name": `${ele.firstname} ${ele.middlename} ${ele.lastname}`,
-                    "gender": ele.gender,
+                    "name": `${ele.first_name} ${ele.middle_name} ${ele.last_name}`,
+                    "gender": ele.gender || null,
                     "dob": new Date(ele.date_of_birth),
                     "dobText": this.calculateAge(new Date(ele.date_of_birth)),
-                    "admissionType": ele.admission_type,
+                    "admissionType": ele.addmission_type_id.toString(),
                     "email": ele.email,
                     "phoneNumber": ele.phone_number,
                     "bloodGroup": 'B+',//blood_group_id
-                    "mrnNo": ele.mrn,
+                    "mrnNo": ele.mrn || null,
                     "status": 'Active',
-                    "occupation": ele.occupation,
-                    "insurance_provider": ele.insurance_provider,
-                    "insurance_number": ele.insurance_number,
-                    "visiting_department": ele.visiting_department,
-                    "appointment_time": ele.appointment_time,
-                    "created_at": new Date(ele.created_at),
-                    "updated_at": new Date(ele.updated_at)
+                    "occupation": ele.occupation || null,
+                    "insurance_provider": ele.insurance_provider || null,
+                    "insurance_number": ele.insurance_number || null,
+                    "visiting_department": ele.visiting_department || null,
+                    "appointment_time": ele.appointment_time || null,
+                    "created_at": ele.created_at != null ? new Date(ele.created_at) : null,
+                    "updated_at": ele.updated_at != null ? new Date(ele.updated_at) : null
                 };
                 this.patients.push(registrationsInfo)
             });
