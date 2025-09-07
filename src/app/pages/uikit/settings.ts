@@ -23,7 +23,8 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { MessageModule } from 'primeng/message';
 import { DialogModule } from 'primeng/dialog';
 import { KeyFilterModule } from 'primeng/keyfilter';
-// import tippy from 'tippy.js';    
+// import tippy from 'tippy.js';
+import { LoaderService } from '../../loader.service';
 import { NgxTippyModule } from 'ngx-tippy-wrapper';
 interface State {
     name: string;
@@ -69,12 +70,10 @@ interface Patient {
             <p-tabs value="0">
                 <p-tablist style="overflow:auto">
                     <p-tab value="0">Manage Permissions</p-tab>
-                    <p-tab value="1">Manage Users</p-tab>
-                    <p-tab value="2">Manage Employees</p-tab>
-                    <p-tab value="3">Manage Roles</p-tab>
-                    <p-tab value="4">Manage Designations</p-tab>
-                    <p-tab value="5">Manage Departments</p-tab>
-                    <p-tab value="6">Manage Documents</p-tab>
+                    <p-tab value="1">Manage Roles</p-tab>
+                    <p-tab value="2">Manage Designations</p-tab>
+                    <p-tab value="3">Manage Departments</p-tab>
+                    <p-tab value="4">Manage Documents</p-tab>
                 </p-tablist>
                 <p-tabpanels>
                     <p-tabpanel value="0">
@@ -130,220 +129,10 @@ interface Patient {
                             </div>
                         </div>
                     </p-tabpanel>
+
                     <p-tabpanel value="1">
-                        <div style="height: 441px; overflow-y: auto;">
-                            <p-table [value]="settings_mng_users" stripedRows>
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th style="min-width:1rem"></th>
-                                        <th style="min-width:20rem">User Name</th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Mobile
-                                                <p-columnFilter type="text" field="phoneNumber" display="menu" />
-                                            </div>
-                                        </th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Email
-                                                <p-columnFilter type="text" field="email" display="menu" />
-                                            </div>
-                                        </th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Blood Group
-                                                <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
-                                                <ng-template #filter let-values let-filter="filterCallback">
-                                                    <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
-                                                        <ng-template let-option #item>
-                                                            <p-tag [value]="option.value" severity="warn"></p-tag>
-                                                        </ng-template>
-                                                    </p-select>
-                                                </ng-template>
-                                            </p-columnFilter> -->
-                                            </div>
-                                        </th>
-                                        <th style="min-width:4rem">MRN No.</th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Status
-                                                <!-- <p-columnFilter field="status" matchMode="equals" display="menu">
-                                                <ng-template #filter let-values let-filter="filterCallback">
-                                                    <p-select [(ngModel)]="value" [options]="status" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
-                                                        <ng-template let-option #item>
-                                                            <p-tag [value]="option.value" [severity]="option.label == 'Active' ? 'success' : option.label == 'Inactive' ? 'warn' : 'danger'"></p-tag>
-                                                        </ng-template>
-                                                    </p-select>
-                                                </ng-template>
-                                            </p-columnFilter> -->
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-patient>
-                                    <tr>
-                                        <td class="text-center">
-                                            <p-tag [value]="patient.admissionType" [severity]="_productService.getSeverityForAdmissionType(patient.admissionType)"></p-tag>
-                                        </td>
-                                        <td>
-                                            <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
-                                                <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
-                                                    {{ patient.name.slice(0, 1) }}
-                                                </span>
-                                                <span class="ml-2 font-medium"> {{ patient.name }} </span>
-                                            </p-chip>
-                                            <div style="margin-left:15px;margin-top:3px" class="flex flex-row">
-                                                <div class="flex">
-                                                    <p-tag [value]="patient.gender" [severity]="patient.gender == 'Male' ? 'success' : 'danger'"></p-tag>
-                                                </div>
-                                                <div class="flex font-semibold text-sm mt-1 ml-2">
-                                                    <div>
-                                                        <div class="text-sm">{{ patient.dob | date: 'dd MMM yyyy' }}</div>
-                                                        <div class="text-xs">{{ patient.dobText }}</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- <p-tag [value]="patient.gender" [severity]="patient.gender == 'Male' ? 'success' : 'danger'"></p-tag>
-                                    <div class="flex flex-row justify-content-between font-semibold text-sm mt-1 ml-2">
-                                        {{ patient.dob | date: 'dd MMM yyyy' }}
-                                    </div>
-                                    {{ patient.dobText }} -->
-                                        </td>
-                                        <td class="text-right">
-                                            {{ patient.phoneNumber }}
-                                        </td>
-                                        <td>
-                                            {{ patient.email }}
-                                        </td>
-                                        <td>
-                                            <p-tag [value]="patient.bloodGroup" [severity]="'warn'"></p-tag>
-                                        </td>
-                                        <td>
-                                            {{ patient.mrnNo }}
-                                        </td>
-                                        <td>
-                                            <p-tag [value]="patient.status" [severity]="patient.status == 'Active' ? 'success' : patient.status == 'Inactive' ? 'warn' : 'danger'"></p-tag>
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                                <ng-template #emptymessage>
-                                    <tr>
-                                        <td colspan="6" class="text-center">No Registrations found.</td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
-                        </div>
-                    </p-tabpanel>
-                    <p-tabpanel value="2">
-                        <!--settings_mng_employees -->
-                        <div style="height: 441px; overflow-y: auto;">
-                            <p-table [value]="settings_mng_employees" stripedRows>
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th style="min-width:1rem"></th>
-                                        <th style="min-width:20rem">Patient Name</th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Mobile
-                                                <p-columnFilter type="text" field="phoneNumber" display="menu" />
-                                            </div>
-                                        </th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Email
-                                                <p-columnFilter type="text" field="email" display="menu" />
-                                            </div>
-                                        </th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Blood Group
-                                                <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
-                                                <ng-template #filter let-values let-filter="filterCallback">
-                                                    <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
-                                                        <ng-template let-option #item>
-                                                            <p-tag [value]="option.value" severity="warn"></p-tag>
-                                                        </ng-template>
-                                                    </p-select>
-                                                </ng-template>
-                                            </p-columnFilter> -->
-                                            </div>
-                                        </th>
-                                        <th style="min-width:4rem">MRN No.</th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Status
-                                                <!-- <p-columnFilter field="status" matchMode="equals" display="menu">
-                                                <ng-template #filter let-values let-filter="filterCallback">
-                                                    <p-select [(ngModel)]="value" [options]="status" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
-                                                        <ng-template let-option #item>
-                                                            <p-tag [value]="option.value" [severity]="option.label == 'Active' ? 'success' : option.label == 'Inactive' ? 'warn' : 'danger'"></p-tag>
-                                                        </ng-template>
-                                                    </p-select>
-                                                </ng-template>
-                                            </p-columnFilter> -->
-                                            </div>
-                                        </th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-patient>
-                                    <tr>
-                                        <td class="text-center">
-                                            <p-tag [value]="patient.admissionType" [severity]="_productService.getSeverityForAdmissionType(patient.admissionType)"></p-tag>
-                                        </td>
-                                        <td>
-                                            <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
-                                                <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
-                                                    {{ patient.name.slice(0, 1) }}
-                                                </span>
-                                                <span class="ml-2 font-medium"> {{ patient.name }} </span>
-                                            </p-chip>
-                                            <div style="margin-left:15px;margin-top:3px" class="flex flex-row">
-                                                <div class="flex">
-                                                    <p-tag [value]="patient.gender" [severity]="patient.gender == 'Male' ? 'success' : 'danger'"></p-tag>
-                                                </div>
-                                                <div class="flex font-semibold text-sm mt-1 ml-2">
-                                                    <div>
-                                                        <div class="text-sm">{{ patient.dob | date: 'dd MMM yyyy' }}</div>
-                                                        <div class="text-xs">{{ patient.dobText }}</div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- <p-tag [value]="patient.gender" [severity]="patient.gender == 'Male' ? 'success' : 'danger'"></p-tag>
-                                    <div class="flex flex-row justify-content-between font-semibold text-sm mt-1 ml-2">
-                                        {{ patient.dob | date: 'dd MMM yyyy' }}
-                                    </div>
-                                    {{ patient.dobText }} -->
-                                        </td>
-                                        <td class="text-right">
-                                            {{ patient.phoneNumber }}
-                                        </td>
-                                        <td>
-                                            {{ patient.email }}
-                                        </td>
-                                        <td>
-                                            <p-tag [value]="patient.bloodGroup" [severity]="'warn'"></p-tag>
-                                        </td>
-                                        <td>
-                                            {{ patient.mrnNo }}
-                                        </td>
-                                        <td>
-                                            <p-tag [value]="patient.status" [severity]="patient.status == 'Active' ? 'success' : patient.status == 'Inactive' ? 'warn' : 'danger'"></p-tag>
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                                <ng-template #emptymessage>
-                                    <tr>
-                                        <td colspan="6" class="text-center">No Registrations found.</td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
-                        </div>
-                    </p-tabpanel>
-                    <p-tabpanel value="3">
                         <!--settings_mng_roles -->
-                        <p-button   (click)="showDialogRoles('add');  roleName['name'] = null; roleName['id'] = null" icon="pi pi-plus-circle" label="Add Role" severity="secondary" styleClass="min-w-40" />
+                        <p-button (click)="showDialogRoles('add'); roleName['name'] = null; roleName['id'] = null" icon="pi pi-plus-circle" label="Add Role" severity="secondary" styleClass="min-w-40" />
                         <div class="main-card mt-2">
                             <div class="grid">
                                 <div class="col-6 col-offset-4">
@@ -354,9 +143,8 @@ interface Patient {
                                                     <div class="font-light text-gray-700">Role</div>
                                                 </ng-template>
                                                 <div style="width: 300px;">
-                                                    <div class="flex flex-row cursor-pointer" 
-                                                    (click)="showDialogRoles('edit'); roleName['name'] = rls.name; roleName['id'] = rls.id">
-                                                        <div class="font-bold text-green-600 ml-2" [ngxTippy]="'Edit ' + rls.name ">
+                                                    <div class="flex flex-row cursor-pointer" (click)="showDialogRoles('edit'); roleName['name'] = rls.name; roleName['id'] = rls.id">
+                                                        <div class="font-bold text-green-600 ml-2" [ngxTippy]="'Edit ' + rls.name">
                                                             {{ rls.name }}
                                                         </div>
                                                     </div>
@@ -368,7 +156,7 @@ interface Patient {
                             </div>
                         </div>
                     </p-tabpanel>
-                    <p-tabpanel value="4">
+                    <p-tabpanel value="2">
                         <!--settings_mng_designations -->
                         <p-button (click)="showDialogDesig('add'); designationName['name'] = null; designationName['id'] = null" icon="pi pi-plus-circle" label="Add Designation" severity="secondary" styleClass="min-w-40" />
                         <div class="main-card mt-2">
@@ -382,7 +170,7 @@ interface Patient {
                                                 </ng-template>
                                                 <div style="width: 300px;">
                                                     <div class="flex flex-row cursor-pointer" (click)="showDialogDesig('edit'); designationName['name'] = desigs.name; designationName['id'] = desigs.designation_id">
-                                                        <div class="font-bold text-green-600 ml-2" [ngxTippy]="'Edit ' + desigs.name ">
+                                                        <div class="font-bold text-green-600 ml-2" [ngxTippy]="'Edit ' + desigs.name">
                                                             {{ desigs.name }}
                                                         </div>
                                                     </div>
@@ -394,7 +182,7 @@ interface Patient {
                             </div>
                         </div>
                     </p-tabpanel>
-                    <p-tabpanel value="5">
+                    <p-tabpanel value="3">
                         <!--settings_mng_departments -->
                         <p-button (click)="showDialogDept('add'); departmentName['name'] = null; departmentName['id'] = null" icon="pi pi-plus-circle" label="Add Department" severity="secondary" styleClass="min-w-40" />
                         <div class="main-card mt-2">
@@ -408,7 +196,7 @@ interface Patient {
                                                 </ng-template>
                                                 <div style="width: 300px;">
                                                     <div class="flex flex-row cursor-pointer" (click)="showDialogDept('edit'); departmentName['name'] = deps.name; departmentName['id'] = deps.depsrtment_id">
-                                                        <div class="font-bold text-green-600 ml-2" [ngxTippy]="'Edit ' + deps.name ">
+                                                        <div class="font-bold text-green-600 ml-2" [ngxTippy]="'Edit ' + deps.name">
                                                             {{ deps.name }}
                                                         </div>
                                                     </div>
@@ -420,7 +208,7 @@ interface Patient {
                             </div>
                         </div>
                     </p-tabpanel>
-                    <p-tabpanel value="6">
+                    <p-tabpanel value="4">
                         <!--settings_mng_documents -->
                         <p-button (click)="showDialog('add'); myDocName['myDocName'] = null; myDocName['docid'] = null" icon="pi pi-plus-circle" label="Add Document" severity="secondary" styleClass="min-w-40" />
                         <div class="main-card mt-2">
@@ -434,7 +222,7 @@ interface Patient {
                                                 </ng-template>
                                                 <div style="width: 300px;">
                                                     <div class="flex flex-row cursor-pointer" (click)="showDialog('edit'); myDocName['myDocName'] = document.docname; myDocName['docid'] = document.docid">
-                                                        <div class="font-bold text-green-600 ml-2" [ngxTippy]="'Edit ' + document.docname ">
+                                                        <div class="font-bold text-green-600 ml-2" [ngxTippy]="'Edit ' + document.docname">
                                                             {{ document.docname }}
                                                         </div>
                                                     </div>
@@ -453,7 +241,7 @@ interface Patient {
                 <!-- <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span> -->
                 <div class="flex items-center gap-4 mb-4">
                     <!-- <label for="username" class="font-semibold w-10">Name</label> -->
-                    <input pInputText  id="username" class="flex-auto" autocomplete="off" [(ngModel)]="myDocName.myDocName" [pKeyFilter]="'alpha'"/>
+                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="myDocName.myDocName" />
                 </div>
 
                 <div class="flex justify-end gap-2">
@@ -469,7 +257,7 @@ interface Patient {
                 <!-- <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span> -->
                 <div class="flex items-center gap-4 mb-4">
                     <!-- <label for="username" class="font-semibold w-10">Name</label> -->
-                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="roleName.name" [pKeyFilter]="'alpha'" />
+                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="roleName.name" />
                 </div>
 
                 <div class="flex justify-end gap-2">
@@ -485,7 +273,7 @@ interface Patient {
                 <!-- <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span> -->
                 <div class="flex items-center gap-4 mb-4">
                     <!-- <label for="username" class="font-semibold w-10">Name</label> -->
-                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="designationName.name" [pKeyFilter]="'alpha'" />
+                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="designationName.name" />
                 </div>
 
                 <div class="flex justify-end gap-2">
@@ -501,7 +289,7 @@ interface Patient {
                 <!-- <span class="text-surface-500 dark:text-surface-400 block mb-8">Update your information.</span> -->
                 <div class="flex items-center gap-4 mb-4">
                     <!-- <label for="username" class="font-semibold w-10">Name</label> -->
-                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="departmentName.name" [pKeyFilter]="'alpha'" />
+                    <input pInputText id="username" class="flex-auto" autocomplete="off" [(ngModel)]="departmentName.name" />
                 </div>
 
                 <div class="flex justify-end gap-2">
@@ -563,14 +351,14 @@ export class settings implements OnInit, AfterViewInit {
     public settings_mng_designations: any = [];
     public settings_mng_departments: any = [];
     public settings_mng_documents: any = [];
-
     status: any[] = [
         { label: 'Active', value: 'Active' },
         { label: 'Inactive', value: 'Inactive' },
         { label: 'Deleted', value: 'Deleted' }
     ];
-
+    constructor(private loader: LoaderService) {}
     async ngOnInit() {
+        this.loader.show();
         this.dropDownLoad = true;
         let usersOptns: any = await this.loginSerivce.getAllUsers();
         if (usersOptns.status == 200) {
@@ -583,6 +371,7 @@ export class settings implements OnInit, AfterViewInit {
         this.settings_mng_departments = await this.loginSerivce.getAllDepartments();
         this.settings_mng_documents = await this.loginSerivce.getDoc();
         this.getAllDocs.forEach((ele: any) => (ele.isDoc = false));
+        this.loader.hide();
     }
 
     ngAfterViewInit() {
@@ -687,7 +476,7 @@ export class settings implements OnInit, AfterViewInit {
         if (this.mode == 'add') {
         } else {
         }
-        this.myDocName['myDocName'] = this.roleName['myDocName'].trim();
+        // this.myDocName['myDocName'] = this.roleName['myDocName'].trim();
         const docAdd = await this.loginSerivce.saveDocument(this.myDocName);
         if (docAdd) {
             this.isDocSuccess = false;
@@ -710,7 +499,7 @@ export class settings implements OnInit, AfterViewInit {
         if (this.mode == 'add') {
         } else {
         }
-        this.roleName['name'] = this.roleName['name'].trim();
+        // this.roleName['name'] = this.roleName['name'].trim();
         const roleAddorEdit = await this.loginSerivce.saveRole(this.roleName);
         if (roleAddorEdit) {
             this.isRoleSuccess = false;
@@ -734,7 +523,7 @@ export class settings implements OnInit, AfterViewInit {
         if (this.mode == 'add') {
         } else {
         }
-        this.designationName['name'] = this.designationName['name'].trim();
+        // this.designationName['name'] = this.designationName['name'].trim();
         const desigAddorEdit = await this.loginSerivce.saveDesignation(this.designationName);
         if (desigAddorEdit) {
             this.isDesigSucess = false;
@@ -756,10 +545,9 @@ export class settings implements OnInit, AfterViewInit {
     async saveDepartment() {
         this.isdepSucess = true;
         if (this.mode == 'add') {
+        } else {
         }
-        else {
-        }
-        this.departmentName['name'] = this.departmentName['name'].trim();
+        // this.departmentName['name'] = this.departmentName['name'].trim();
         const depSaveEdit = await this.loginSerivce.saveDepartment(this.departmentName);
         if (depSaveEdit) {
             this.isdepSucess = false;

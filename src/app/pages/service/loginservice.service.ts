@@ -287,4 +287,25 @@ export class LoginserviceService {
         else getData = data;
         return getData;
     }
+
+    async getZeroLevelEntity(params: any) {
+        let getData = null;
+        let { data, error } = await this.supabase.rpc('upr_khims_get_entity_value', {
+            par_flag: 'e',
+            par_entity_id: params['par_entity_id'] || null
+        });
+        if (error) getData = error;
+        else getData = data;
+        return getData;
+    }
+
+    async getStateMasterList() {
+        let getData = null;
+        let { data, error } = await this.supabase.rpc('upr_khims_get_state_master', {
+            par_flag: 'g'
+        });
+        if (error) getData = error;
+        else getData = data;
+        return getData;
+    }
 }

@@ -1,4 +1,4 @@
-import { Component, Renderer2, ViewChild } from '@angular/core';
+import { Component, inject, Renderer2, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
@@ -6,34 +6,44 @@ import { AppTopbar } from './app.topbar';
 import { AppSidebar } from './app.sidebar';
 // import { AppFooter } from './app.footer';
 import { LayoutService } from '../service/layout.service';
-
+import { BlockUIModule } from 'primeng/blockui';
+import { LoginserviceService } from '../../pages/service/loginservice.service';
+import { LoaderService } from '../../loader.service';
 @Component({
     selector: 'app-layout',
     standalone: true,
-    imports: [CommonModule, AppTopbar, AppSidebar, RouterModule],
+    imports: [CommonModule, AppTopbar, AppSidebar, RouterModule, BlockUIModule],
     template: `<div class="layout-wrapper" [ngClass]="containerClass">
-        <app-topbar></app-topbar>
-        <app-sidebar></app-sidebar>
-        <div class="layout-main-container">
-            <div class="layout-main">
-                <router-outlet></router-outlet>
+            <app-topbar></app-topbar>
+            <app-sidebar></app-sidebar>
+            <div class="layout-main-container">
+                <div class="layout-main">
+                    <router-outlet></router-outlet>
+                </div>
             </div>
-            <!-- <app-footer></app-footer> -->
+            <div class="layout-mask animate-fadein"></div>
         </div>
-        
-        <div class="layout-mask animate-fadein"></div>
-    </div> `
+        <p-blockui [blocked]="isBlockUi" fullScreen="true">
+            <div class="flex flex-col items-center justify-center w-full h-full">
+                <i class="pi pi-sync text-4xl animate-spin "></i>
+                <p class="mt-2 text-3xl">Take a breath for a while...</p>
+            </div>
+        </p-blockui>
+        <style>
+            ::ng-deep .p-blockui {
+                z-index: 2000 !important; /* adjust as needed */
+            }
+        </style> `
 })
 export class AppLayout {
     overlayMenuOpenSubscription: Subscription;
-
     menuOutsideClickListener: any;
-
     @ViewChild(AppSidebar) appSidebar!: AppSidebar;
-
     @ViewChild(AppTopbar) appTopBar!: AppTopbar;
-
+    public isGetBlockUi: any = inject(LoginserviceService);
+    public isBlockUi = false;
     constructor(
+        public loaderService: LoaderService,
         public layoutService: LayoutService,
         public renderer: Renderer2,
         public router: Router
@@ -50,6 +60,9 @@ export class AppLayout {
             if (this.layoutService.layoutState().staticMenuMobileActive) {
                 this.blockBodyScroll();
             }
+        });
+        this.loaderService.loading$.subscribe((state: any) => {
+            this.isBlockUi = state;
         });
 
         this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(() => {
