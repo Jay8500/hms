@@ -38,7 +38,7 @@ export class Dashboard implements OnInit {
     async ngOnInit() {
         this.items = await this._supabaseService.getItems();
         this.getAllDocs = await this._supabaseHimsService.getDoc(); // Store the Observable
-        console.log(this.getAllDocs);
+        // console.log(this.getAllDocs);
         // this.subscription = this.getAllDocs.subscribe({
         //     // Store the subscription
         //     next: (data: any) => {

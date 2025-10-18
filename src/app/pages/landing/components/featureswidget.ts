@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 @Component({
     selector: 'features-widget',
     standalone: true,
@@ -9,7 +8,7 @@ import { CommonModule } from '@angular/common';
         <div class="grid grid-cols-12 gap-4 justify-center">
             <div class="col-span-12 text-center mt-20 mb-6">
                 <div class="text-surface-900 dark:text-surface-0 font-normal mb-2 text-4xl">Features</div>
-                <span class="text-muted-color text-2xl">Use for daily tasks updations...</span>
+                <span class="text-muted-color text-2xl">Your daily hospital assistant....</span>
             </div>
 
             <div class="col-span-12 md:col-span-12 lg:col-span-4 p-0 lg:pr-8 lg:pb-8 mt-6 lg:mt-0">
@@ -47,9 +46,6 @@ import { CommonModule } from '@angular/common';
                     </div>
                 </div>
             </div>
-
-          
-
 
             <div
                 class="col-span-12 mt-20 mb-20 p-2 md:p-20"

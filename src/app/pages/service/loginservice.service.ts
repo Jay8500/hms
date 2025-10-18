@@ -184,7 +184,9 @@ export class LoginserviceService {
 
     getLocalKeys(key: any) {
         let myKey = null;
-        myKey = JSON.parse(localStorage.getItem('hmskeys') || '')[key];
+        if (![undefined, null, ''].includes(localStorage.getItem('hmskeys'))) {
+            myKey = JSON.parse(localStorage.getItem('hmskeys') || '')[key];
+        }
         return myKey;
     }
 

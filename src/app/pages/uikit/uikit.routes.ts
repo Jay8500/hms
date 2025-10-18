@@ -1,24 +1,14 @@
 import { Routes } from '@angular/router';
 import { ButtonDemo } from './buttondemo';
-// import { ChartDemo } from './chartdemo';
-// import { FileDemo } from './filedemo';
 import { FormLayoutDemo } from './formlayoutdemo';
-// import { InputDemo } from './inputdemo';
 import { ListDemo } from './listdemo';
-// import { MediaDemo } from './mediademo';
-// import { MessagesDemo } from './messagesdemo';
-// import { MiscDemo } from './miscdemo';
-// import { PanelsDemo } from './panelsdemo';
-// import { TimelineDemo } from './timelinedemo';
-import { TableDemo } from './tabledemo';
-// import { OverlayDemo } from './overlaydemo';
-// import { TreeDemo } from './treedemo';
-// import { MenuDemo } from './menudemo';
+// import { TableDemo } from './tabledemo';
 import { Inventory } from './inventory';
 import { settings } from './settings';
-import {  AppointmentWorkflowComponent } from './appointment';
-import {  BillingComponent } from './billing';
+import { AppointmentWorkflowComponent } from './appointment';
+import { BillingComponent } from './billing';
 import { PatientAssessmentComponent } from './assessement';
+import { ConsultationsComponent } from './consultations';
 
 //  data: { breadcrumb: 'Form Layout' },
 export default [
@@ -31,6 +21,7 @@ export default [
     { path: 'inventory', data: { breadcrumb: 'Inventory' }, component: Inventory },
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'settings', data: { breadcrumb: 'Button' }, component: settings },
+    { path: 'consultations', data: { breadcrumb: 'Consulations' }, component: ConsultationsComponent },
     // { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
     // { path: 'file', data: { breadcrumb: 'File' }, component: FileDemo },
     // { path: 'media', data: { breadcrumb: 'Media' }, component: MediaDemo },
