@@ -26,7 +26,7 @@ import { LoaderService } from '../../loader.service';
         <p-blockui [blocked]="isBlockUi" fullScreen="true">
             <div class="flex flex-col items-center justify-center w-full h-full">
                 <i class="pi pi-sync text-4xl animate-spin "></i>
-                <p class="mt-2 text-3xl">Take a breath for a while...</p>
+                <p class="mt-2 text-3xl font-bold">Please wait...</p>
             </div>
         </p-blockui>
         <style>

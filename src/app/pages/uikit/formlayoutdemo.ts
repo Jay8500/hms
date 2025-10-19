@@ -55,7 +55,7 @@ interface Patient {
     ],
     providers: [ProductService, DatePipe, MessageService],
     template: `
-        <div class="card">
+        <div class="card  my-height">
             <p-tabs value="0">
                 <p-tablist>
                     <p-tab value="0">Registrations</p-tab>

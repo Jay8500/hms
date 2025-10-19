@@ -14,7 +14,7 @@ import { Observable, Subscription } from 'rxjs'; // Import Subscriptio
     imports: [StatsWidget, BestSellingWidget, CommonModule],
     providers: [PhotoService],
     template: `
-        <div class="grid grid-cols-12 gap-8">
+        <div class="grid grid-cols-12 gap-3 my-height">
             <!-- <div *ngFor="let d of items;">{{ d.name}}</div> -->
             <app-stats-widget class="contents" />
             <div class="col-span-12 xl:col-span-6">

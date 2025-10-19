@@ -4,3 +4,8 @@
 @use 'primeicons/primeicons.css';
 @use './assets/demo/demo.scss';
 @import 'tippy.js/dist/tippy.css';
+
+.my-height {
+    height: calc(100vh - 112px) !important;
+    overflow-y: scroll !important;
+}

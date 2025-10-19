@@ -52,7 +52,7 @@ interface BillItem {
         CardModule
     ],
     providers: [ProductService],
-    template: `<div class="card">
+    template: `<div class="card  my-height">
         <!-- Header with Back Navigation -->
         <div class="billing-header mb-4" *ngIf="isNavigatedFromAppointment">
             <div class="flex justify-content-between align-items-center">

@@ -66,7 +66,7 @@ interface Patient {
         KeyFilterModule
     ],
     providers: [ProductService],
-    template: `<div class="card">
+    template: `<div class="card  my-height">
             <p-tabs value="0">
                 <p-tablist style="overflow:auto">
                     <p-tab value="0">Manage Permissions</p-tab>

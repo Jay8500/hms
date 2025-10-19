@@ -60,7 +60,7 @@ interface Appointment {
         TagModule
     ],
     providers: [ProductService],
-    template: `<div class="card">
+    template: `<div class="card  my-height">
         <p-tabs value="0">
             <p-tablist>
                 <p-tab value="0">Appointments</p-tab>
