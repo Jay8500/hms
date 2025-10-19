@@ -176,8 +176,8 @@ interface Appointment {
                 </p-tabpanel>
                 <p-tabpanel value="1">
                     <p-fluid>
-                        <div class="flex mt-8">
-                            <div class="card flex flex-col gap-6 w-full">
+                        <div class="flex mt-1">
+                            <div class="card flex flex-col gap-3 w-full">
                                 <div class="flex flex-col md:flex-row gap-6">
                                     <div class="flex flex-wrap gap-2 w-full">
                                         <label for="patient">Patient</label>

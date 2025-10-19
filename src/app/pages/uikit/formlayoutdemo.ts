@@ -18,6 +18,9 @@ import { ChipModule } from 'primeng/chip';
 import { NameInitialsPipe } from '../../name-initials.pipe';
 import { LoginserviceService } from '../service/loginservice.service';
 import { LoaderService } from '../../loader.service';
+// import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { Toast, ToastModule } from 'primeng/toast';
 interface State {
     name: string;
     id: string;
@@ -47,9 +50,10 @@ interface Patient {
         InputMaskModule,
         TableModule,
         TabsModule,
-        TagModule
+        TagModule,
+        ToastModule
     ],
-    providers: [ProductService, DatePipe],
+    providers: [ProductService, DatePipe, MessageService],
     template: `
         <div class="card">
             <p-tabs value="0">
@@ -308,6 +312,7 @@ interface Patient {
                     </p-tabpanel>
                 </p-tabpanels>
             </p-tabs>
+            <p-toast />
         </div>
     `
 })
@@ -316,7 +321,6 @@ export class FormLayoutDemo implements OnInit {
     public loginSerivce = inject(LoginserviceService);
     public _datePipe = inject(DatePipe);
     public ioorop: any = 'all';
-    public isblockUI = false;
     public dobMinDate = new Date();
     stateOptions: any[] = [
         { label: 'All', value: 'all' },
@@ -363,7 +367,7 @@ export class FormLayoutDemo implements OnInit {
     state_id: null | undefined; // { name: 'New York', code: 'NY' };
     zip: string = '';
     admissionType: string = '1'; // Default to Outpatient
-    dob: Date | undefined; // new Date(1990, 0, 15);
+    dob = null; // new Date(1990, 0, 15);
     phoneNumber: string = '';
     email: string = '';
     emergencyContactName: string = '';
@@ -378,45 +382,78 @@ export class FormLayoutDemo implements OnInit {
     admittingDoctor: string = '';
     roomNumber: string = '';
     visitingDepartment: string = '';
-    appointmentTime: Date | undefined;
+    appointmentTime = null;
 
-    constructor(private loader: LoaderService) {}
+    constructor(
+        private loader: LoaderService,
+        private messageService: MessageService
+    ) {}
 
     async register() {
-        this.isblockUI = true;
-        const saveRegistration = await this.loginSerivce.saveRegistration({
-            patient_reg_id: '0',
-            patient_reg_rev_no: '0',
-            patient_reg_cd: 'FRONT_END',
-            first_name: this.firstname,
-            last_name: this.lastname,
-            middle_name: this.middle,
-            address: this.address,
-            state_id: this.state_id,
-            zipcode: this.zip,
-            addmission_type_id: this.admissionType,
-            date_of_birth: this._datePipe.transform(this.dob, 'dd MMM YYYY'),
-            phone_number: this.phoneNumber,
-            email: this.email,
-            emer_contact_number: this.emergencyContactNumber,
-            emer_contact_name: this.emergencyContactNumber,
-            gender_id: this.gender,
-            blood_group_id: this.bloodGroup,
-            mr_number: this.mrn,
-            occupation_id: this.occupation,
-            insurance_provider: this.insuranceProvider,
-            insurance_number: this.insuranceNumber,
-            visiting_dept_id: this.visitingDepartment || null,
-            appoint_time: this._datePipe.transform(this.appointmentTime, 'hh mm a') || null,
-            create_by: 1,
-            record_status: 'A'
-        });
-        if (saveRegistration) {
+        try {
+            this.loader.show();
+            const saveRegistration = await this.loginSerivce.saveRegistration({
+                patient_reg_id: '0',
+                patient_reg_rev_no: '0',
+                patient_reg_cd: 'FRONT_END',
+                first_name: this.firstname,
+                last_name: this.lastname,
+                middle_name: this.middle,
+                address: this.address,
+                state_id: this.state_id,
+                zipcode: this.zip,
+                addmission_type_id: this.admissionType,
+                date_of_birth: this._datePipe.transform(this.dob, 'dd MMM YYYY'),
+                phone_number: this.phoneNumber,
+                email: this.email,
+                emer_contact_number: this.emergencyContactNumber,
+                emer_contact_name: this.emergencyContactNumber,
+                gender_id: this.gender,
+                blood_group_id: this.bloodGroup,
+                mr_number: this.mrn,
+                occupation_id: this.occupation,
+                insurance_provider: this.insuranceProvider,
+                insurance_number: this.insuranceNumber,
+                visiting_dept_id: this.visitingDepartment || null,
+                appoint_time: this._datePipe.transform(this.appointmentTime, 'hh mm a') || null,
+                create_by: 1,
+                record_status: 'A'
+            });
+            if (saveRegistration['record_msg'] == 'Success') {
+                this.messageService.add({ severity: 'success', summary: 'Registration', detail: `Registration is saved successfully with ${saveRegistration['record_code']}` });
+                this.cancel();
+            } else {
+            }
+        } catch (e) {
+            this.messageService.add({ severity: 'success', summary: 'Registration', detail: `Unable to process your request, try again!!!` });
+
+            this.loader.hide();
         }
-        this.isblockUI = false;
+        this.loader.hide();
     }
 
-    cancel() {}
+    cancel() {
+        this.firstname = '';
+        this.lastname = '';
+        this.middle = '';
+        this.address = '';
+        this.state_id = null;
+        this.zip = '';
+        this.admissionType = '';
+        this.dob = null;
+        this.email = '';
+        this.emergencyContactNumber = '';
+        this.emergencyContactNumber = '';
+        this.gender = '';
+        this.bloodGroup = '';
+        this.mrn = '';
+        this.occupation = '';
+        this.insuranceProvider = '';
+        this.insuranceNumber = '';
+        this.visitingDepartment = '';
+        this.appointmentTime = null;
+        this.insuranceNumber = '';
+    }
 
     calculateAge(dob: Date): any {
         const today = new Date();
