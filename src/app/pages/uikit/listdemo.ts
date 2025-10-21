@@ -265,7 +265,7 @@ export class ListDemo implements OnInit {
     async saveEmp() {
         try {
             this._lodSrvce.show();
-            const saveEmp = await this.logSrvc.saveInventoryItems(this.employee);
+            const saveEmp = await this.logSrvc.saveEmployee(this.employee);
             if (saveEmp) {
                 this.messageService.add({ severity: 'success', summary: 'Employee', detail: `Employee is saved successfully ` });
                 this.cancel();

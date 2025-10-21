@@ -36,7 +36,7 @@ import { CommonModule } from '@angular/common';
             <div class="flex flex-col items-center justify-center p-8 rounded-3xl shadow-2xl bg-white dark:bg-gray-900 max-w-md w-full">
                 <div class="flex items-center justify-center">
                     <a class="flex items-center" href="#">
-                        <img src="../assets/product_images/cureTrack.png" alt="CureTrack Logo" class="h-24 mb-2" />
+                        <img src="../assets/product_images/my.png" alt="CureTrack Logo" class="mb-2 img-height" />
                         <!-- <span class="text-surface-900 dark:text-surface-0 font-medium text-2xl leading-normal mr-20"> CureTrack </span> -->
                     </a>
                 </div>
@@ -74,7 +74,8 @@ import { CommonModule } from '@angular/common';
                  (onClick)="onLogin()" [loading]="loading" [disabled]="[null,'',undefined].includes(password)&&[null,'',undefined].includes(username)"></p-button>
             </div>
         </div>
-    `
+    `,
+    styles : `.img-height{ height :159px !important }`
 })
 export class Login {
     username: string = 'admin';
