@@ -310,4 +310,22 @@ export class LoginserviceService {
         else getData = data;
         return getData;
     }
+
+    async saveEmployee(ctrl: any) {
+        let getData = null;
+        let { data, error } = await this.supabase.rpc('add_or_edit_employee', {
+            p_employee_id: ctrl.p_employee_id,
+            p_empname: ctrl.p_empname,
+            p_designation_id: ctrl.p_designation_id,
+            p_department_id: ctrl.p_department_id,
+            p_dob: ctrl.p_dob,
+            p_email: ctrl.p_email,
+            p_mobile_no: ctrl.p_mobile_no,
+            p_role_id: ctrl.p_role_id
+        });
+        if (error) getData = error;
+        else getData = data;
+        return getData;
+    }
+
 }
