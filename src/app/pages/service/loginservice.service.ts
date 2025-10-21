@@ -190,6 +190,14 @@ export class LoginserviceService {
         return items;
     }
 
+    async getAllEmployees() {
+        let items: any = null;
+        // let { data, error } = await this.supabase.rpc('get_all_inventory');
+        // if (error) items = error;
+        // else items = data;
+        return items;
+    }
+
     getLocalKeys(key: any) {
         let myKey = null;
         if (![undefined, null, ''].includes(localStorage.getItem('hmskeys'))) {
