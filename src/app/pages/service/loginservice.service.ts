@@ -182,6 +182,14 @@ export class LoginserviceService {
         return docs;
     }
 
+    async getAllInventoryItems() {
+        let items: any = null;
+        let { data, error } = await this.supabase.rpc('get_all_inventory');
+        if (error) items = error;
+        else items = data;
+        return items;
+    }
+
     getLocalKeys(key: any) {
         let myKey = null;
         if (![undefined, null, ''].includes(localStorage.getItem('hmskeys'))) {
@@ -230,6 +238,22 @@ export class LoginserviceService {
         let { data, error } = await this.supabase.rpc('add_document', {
             p_docname: ctrl.myDocName,
             p_docid: ctrl.docid
+        });
+        if (error) getData = error;
+        else getData = data;
+        return getData;
+    }
+
+    async saveInventoryItems(ctrl: any) {
+        let getData = null;
+        let { data, error } = await this.supabase.rpc('add_edit_inventory_items', {
+            in_item_id: ctrl.myDocName,
+            in_item_name: ctrl.in_item_name,
+            in_item_category_id: ctrl.in_item_category_id,
+            in_stock_level: ctrl.in_stock_level,
+            in_measurement_unit: ctrl.in_measurement_unit,
+            in_supplier: ctrl.in_supplier,
+            in_supplier_location: ctrl.in_supplier_location
         });
         if (error) getData = error;
         else getData = data;
