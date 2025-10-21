@@ -70,7 +70,7 @@ import { CommonModule } from '@angular/common';
                     <span class="text-sm font-medium text-blue-600 dark:text-purple-400 cursor-pointer">Forgot password?</span>
                 </div>
 
-                <p-button label="Log In" styleClass="w-full mt-8 bg-teal-300"
+                <p-button label="Log In" styleClass="w-full mt-8 bg-blue-600 hover:bg-blue-700 dark:bg-purple-600 dark:hover:bg-purple-700"
                  (onClick)="onLogin()" [loading]="loading" [disabled]="[null,'',undefined].includes(password)&&[null,'',undefined].includes(username)"></p-button>
             </div>
         </div>
