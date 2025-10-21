@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
@@ -15,6 +15,12 @@ import { ProductService } from '../service/product.service';
 import { TagModule } from 'primeng/tag';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ChipModule } from 'primeng/chip';
+import { LoginserviceService } from '../service/loginservice.service';
+import { LoaderService } from '../../loader.service';
+import * as _ from 'lodash';
+import { MessageService } from 'primeng/api';
+import { Toast, ToastModule } from 'primeng/toast';
+
 interface State {
     name: string;
     code: string;
@@ -23,13 +29,13 @@ interface Patient {
     name: string;
     gender: string;
     dob: Date;
-    admissionType: string;
+    in_item_category_id: string;
 }
 @Component({
     selector: 'inventory',
     standalone: true,
-    imports: [CommonModule, InputTextModule, ChipModule, FluidModule, ButtonModule, SelectModule, FormsModule, TextareaModule, RadioButtonModule, SelectButtonModule, CalendarModule, InputMaskModule, TableModule, TabsModule, TagModule],
-    providers: [ProductService],
+    imports: [CommonModule, InputTextModule, ChipModule, FluidModule, ButtonModule, SelectModule, FormsModule, TextareaModule, RadioButtonModule, SelectButtonModule, CalendarModule, InputMaskModule, TableModule, TabsModule, TagModule, ToastModule],
+    providers: [ProductService, MessageService],
     template: `
         <div class="card my-height">
             <p-tabs value="0">
@@ -97,20 +103,7 @@ interface Patient {
                                             </p-columnFilter> -->
                                             </div>
                                         </th>
-                                        <th style="min-width:4rem">
-                                            <div class="flex items-center">
-                                                Reorder Unit
-                                                <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
-                                                <ng-template #filter let-values let-filter="filterCallback">
-                                                    <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
-                                                        <ng-template let-option #item>
-                                                            <p-tag [value]="option.value" severity="warn"></p-tag>
-                                                        </ng-template>
-                                                    </p-select>
-                                                </ng-template>
-                                            </p-columnFilter> -->
-                                            </div>
-                                        </th>
+
                                         <th style="min-width:20rem">
                                             <div class="flex items-center">
                                                 Location
@@ -131,20 +124,6 @@ interface Patient {
                                         <th style="min-width:20rem">
                                             <div class="flex items-center">
                                                 Supplier
-                                                <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
-                                                <ng-template #filter let-values let-filter="filterCallback">
-                                                    <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
-                                                        <ng-template let-option #item>
-                                                            <p-tag [value]="option.value" severity="warn"></p-tag>
-                                                        </ng-template>
-                                                    </p-select>
-                                                </ng-template>
-                                            </p-columnFilter> -->
-                                            </div>
-                                        </th>
-                                        <th style="min-width:20rem">
-                                            <div class="flex items-center">
-                                                Description
                                                 <!-- <p-columnFilter field="bloodGroup" matchMode="equals" display="menu">
                                                 <ng-template #filter let-values let-filter="filterCallback">
                                                     <p-select [(ngModel)]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Select One" styleClass="w-full">
@@ -197,9 +176,9 @@ interface Patient {
                                         <td>
                                             {{ inventoryItems.unitOfMeasurement }}
                                         </td>
-                                        <td>
+                                        <!-- <td>
                                             {{ inventoryItems.reorderPoint }}
-                                        </td>
+                                        </td> -->
                                         <td>
                                             {{ inventoryItems.location }}
                                         </td>
@@ -214,14 +193,14 @@ interface Patient {
                                         <td>
                                             {{ inventoryItems.supplierName }}
                                         </td>
-                                        <td>
+                                        <!-- <td>
                                             {{ inventoryItems.description }}
-                                        </td>
+                                        </td> -->
                                     </tr>
                                 </ng-template>
                                 <ng-template #emptymessage>
                                     <tr>
-                                        <td colspan="4" class="text-center">No Items found.</td>
+                                        <td colspan="7" class="text-center">No Items found.</td>
                                     </tr>
                                 </ng-template>
                             </p-table>
@@ -229,21 +208,12 @@ interface Patient {
                     </p-tabpanel>
                     <p-tabpanel value="1">
                         <p-fluid>
-                            <div class="flex mt-8">
+                            <div class="flex mt-2">
                                 <div class="card flex flex-col gap-6 w-full">
-                                    <div class="font-semibold text-xl">Item</div>
                                     <div class="flex flex-col md:flex-row gap-6">
                                         <div class="flex flex-wrap gap-2 w-full">
                                             <label for="firstname2">Name</label>
-                                            <input pInputText id="firstname2" type="text" [(ngModel)]="firstname" />
-                                        </div>
-                                        <div class="flex flex-wrap gap-2 w-full">
-                                            <label for="lastname2">Code</label>
-                                            <input pInputText id="lastname2" type="text" [(ngModel)]="middle" />
-                                        </div>
-                                        <div class="flex flex-wrap gap-2 w-full">
-                                            <label for="lastname2">Category</label>
-                                            <input pInputText id="lastname2" type="text" [(ngModel)]="lastname" />
+                                            <input pInputText id="firstname2" type="text" [(ngModel)]="in_item_name" />
                                         </div>
                                     </div>
 
@@ -252,15 +222,15 @@ interface Patient {
                                             <label>Category</label>
                                             <div class="flex gap-4">
                                                 <div class="flex align-items-center">
-                                                    <p-radioButton name="admissionType" value="OP" [(ngModel)]="admissionType" inputId="op"></p-radioButton>
+                                                    <p-radioButton name="in_item_category_id" value="10" [(ngModel)]="in_item_category_id" inputId="op"></p-radioButton>
                                                     <label for="op" class="ml-2">Pharmaceuticals</label>
                                                 </div>
                                                 <div class="flex align-items-center">
-                                                    <p-radioButton name="admissionType" value="IP" [(ngModel)]="admissionType" inputId="ip"></p-radioButton>
+                                                    <p-radioButton name="in_item_category_id" value="12" [(ngModel)]="in_item_category_id" inputId="ip"></p-radioButton>
                                                     <label for="ip" class="ml-2">Medical Supplies</label>
                                                 </div>
                                                 <div class="flex align-items-center">
-                                                    <p-radioButton name="admissionType" value="IP" [(ngModel)]="admissionType" inputId="ip"></p-radioButton>
+                                                    <p-radioButton name="in_item_category_id" value="13" [(ngModel)]="in_item_category_id" inputId="ip"></p-radioButton>
                                                     <label for="ip" class="ml-2">Medical Equipment</label>
                                                 </div>
                                             </div>
@@ -269,36 +239,36 @@ interface Patient {
 
                                     <div class="flex flex-col md:flex-row gap-6">
                                         <div class="flex flex-wrap gap-2 w-full">
-                                            <label for="emergencyContactName">Stock Level</label>
-                                            <input pInputText id="emergencyContactName" type="text" [(ngModel)]="emergencyContactName" />
+                                            <label for="in_stock_level">Stock Level</label>
+                                            <input pInputText id="in_stock_level" type="text" [(ngModel)]="in_stock_level" />
                                         </div>
                                         <div class="flex flex-wrap gap-2 w-full">
-                                            <label for="emergencyContactNumber">Measurement Unit</label>
-                                            <input pInputText id="emergencyContactNumber" type="text" [(ngModel)]="emergencyContactNumber" />
+                                            <label for="in_measurement_unit">Measurement Unit</label>
+                                            <input pInputText id="in_measurement_unit" type="text" [(ngModel)]="in_measurement_unit" />
                                         </div>
                                     </div>
 
-                                    <div class="flex flex-col md:flex-row gap-6">
+                                    <!-- <div class="flex flex-col md:flex-row gap-6">
                                         <div class="flex flex-col gap-2 w-full">
                                             <label for="mrn">Reorder Unit</label>
                                             <input pInputText id="mrn" type="text" [(ngModel)]="mrn" style="width: 150px;" />
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <div class="flex flex-col md:flex-row gap-6">
                                         <div class="flex flex-wrap gap-2 w-full">
-                                            <label for="insuranceProvider">Supplier</label>
-                                            <input pInputText id="insuranceProvider" type="text" [(ngModel)]="insuranceProvider" />
+                                            <label for="in_supplier">Supplier</label>
+                                            <input pInputText id="in_supplier" type="text" [(ngModel)]="in_supplier" />
                                         </div>
                                     </div>
 
                                     <div class="flex flex-wrap">
-                                        <label for="address">Location</label>
-                                        <textarea pTextarea id="address" rows="4" [(ngModel)]="address"></textarea>
+                                        <label for="in_supplier_location">Suupplier Location</label>
+                                        <textarea pTextarea id="in_supplier_location" rows="4" [(ngModel)]="in_supplier_location"></textarea>
                                     </div>
 
                                     <div class="flex gap-4 justify-conent-between">
-                                        <button pButton label="Create Item" class="p-button-sm" (click)="register()" [disabled]="isFormDisabled()"></button>
+                                        <button pButton label="Create Item" class="p-button-sm" (click)="saveItem()" [disabled]="isFormDisabled()"></button>
                                         <button pButton label="Cancel" (click)="cancel()" [disabled]="isFormDisabled()" class="p-button-sm p-button-secondary ml-2"></button>
                                     </div>
                                 </div>
@@ -308,9 +278,10 @@ interface Patient {
                 </p-tabpanels>
             </p-tabs>
         </div>
+        <p-toast />
     `
 })
-export class Inventory {
+export class Inventory implements OnInit {
     public _productService = inject(ProductService);
 
     stateOptions: any[] = [
@@ -319,56 +290,7 @@ export class Inventory {
         { label: 'OP', value: 'OP' }
     ];
     value: string = 'all';
-    inventoryItemsInfo: any = [
-        {
-            name: 'Amoxicillin 250mg Capsules',
-            code: 'AMOX-250-CAP',
-            category: 'Pharmaceuticals',
-            currentStockLevel: 350,
-            unitOfMeasurement: 'Strip (10 Capsules/ Strip)',
-            reorderPoint: 100,
-            location: 'Main Pharmacy, Shelf C4',
-            expiryDate: this.calculateAge(new Date(2026, 6, 31)),
-            supplierName: 'Apollo Pharma Distributors',
-            description: null
-        },
-        {
-            name: 'Surgical Gloves (Size 7)',
-            code: 'SG-L-07',
-            category: 'Medical Supplies',
-            currentStockLevel: 180,
-            unitOfMeasurement: 'Pair',
-            reorderPoint: 50,
-            location: 'Operation Theater Store, Cabinet 2',
-            expiryDate: this.calculateAge(new Date(2027, 0, 15)),
-            supplierName: 'SurgiCare India',
-            description: null
-        },
-        {
-            name: 'Normal Saline Solution (500ml)',
-            code: 'NSS-500ML',
-            category: 'Medical Supplies',
-            currentStockLevel: 280,
-            unitOfMeasurement: 'Bottle',
-            reorderPoint: 70,
-            location: 'General Ward Store, Shelf B1',
-            expiryDate: this.calculateAge(new Date(2025, 8, 15)),
-            supplierName: 'MedLife Supplies',
-            description: null
-        },
-        {
-            name: 'Digital Thermometer',
-            code: 'DIGI-THERM-01',
-            category: 'Medical Equipment',
-            currentStockLevel: 28,
-            unitOfMeasurement: 'Each',
-            reorderPoint: 10,
-            location: 'Nursing Station, Equipment Rack',
-            expiryDate: this.calculateAge(new Date(2025, 8, 15)),
-            supplierName: 'HealthTech Instruments',
-            description: null
-        }
-    ];
+    inventoryItemsInfo: any = [];
     filteredPatients: any = JSON.stringify(this.inventoryItemsInfo);
     dropdownItems = [
         { name: 'Option 1', code: 'Option 1' },
@@ -399,52 +321,98 @@ export class Inventory {
     ];
     dropdownItem = null;
     bloodGroups: string[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
-
-    firstname: string = '';
+    in_item_id = null;
+    in_item_name: string = '';
     lastname: string = '';
     middle: string = '';
-    address: string = '';
+    in_supplier_location: string = '';
     state: State | undefined; // { name: 'New York', code: 'NY' };
     zip: string = '';
-    admissionType: string = 'OP'; // Default to Outpatient
+    in_item_category_id: string = 'OP'; // Default to Outpatient
     dob: Date | undefined; // new Date(1990, 0, 15);
     phoneNumber: string = '';
     email: string = '';
-    emergencyContactName: string = '';
-    emergencyContactNumber: string = '';
+    in_stock_level: string = '';
+    in_measurement_unit: string = '';
     gender: string = '';
     bloodGroup: string = 'A+';
     // New Fields
     mrn: string = '';
     occupation: string = '';
-    insuranceProvider: string = '';
+    in_supplier: string = '';
     insuranceNumber: string = '';
     admittingDoctor: string = '';
     roomNumber: string = '';
     visitingDepartment: string = '';
     appointmentTime: Date | undefined;
+    public logSrvc = inject(LoginserviceService);
+    public _lodSrvce = inject(LoaderService);
+    private messageService = inject(MessageService);
 
-    register(): void {
-        // Implement your registration logic here
-        // console.log('Registration Data:', {
-        //     firstname: this.firstname,
-        //     lastname: this.lastname,
-        //     address: this.address,
-        //     state: this.state,
-        //     zip: this.zip,
-        //     admissionType: this.admissionType,
-        //     dob: this.dob,
-        //     phoneNumber: this.phoneNumber,
-        //     email: this.email,
-        //     emergencyContactName: this.emergencyContactName,
-        //     emergencyContactNumber: this.emergencyContactNumber,
-        //     gender: this.gender,
-        //     bloodGroup: this.bloodGroup,
-        // });
-        // You can send this data to your backend API
+    async ngOnInit() {
+        this._lodSrvce.show();
+        this.inventoryItemsInfo = [];
+        try {
+            let inventoryItems = await this.logSrvc.getAllInventoryItems();
+            if (inventoryItems.length > 0) {
+                _.forEach(inventoryItems, (itm: any) => {
+                    let invItems = {
+                        item_id: itm.item_id,
+                        name: itm.item_name,
+                        code: itm.item_code,
+                        category: 'Pharmaceuticals', //item_category_id
+                        currentStockLevel: itm.stock_level,
+                        unitOfMeasurement: itm.measurement_unit,
+                        // reorderPoint: 100,
+                        expiryDate: this.calculateAge(new Date(2026, 6, 31)),
+                        supplierName: itm.supplier,
+                        location: itm.supplier_location
+                        // description: null
+                    };
+                    this.inventoryItemsInfo.push(invItems);
+                });
+            }
+        } catch (e) {
+            this._lodSrvce.hide();
+        }
+        this._lodSrvce.hide();
     }
 
-    cancel() {}
+    async saveItem() {
+        try {
+            this._lodSrvce.show();
+            const saveRegistration = await this.logSrvc.saveInventoryItems({
+                in_item_id: this.in_item_id,
+                in_item_name: this.in_item_name,
+                in_item_category_id: this.in_item_category_id,
+                in_stock_level: this.in_stock_level,
+                in_measurement_unit: this.in_measurement_unit,
+                in_supplier: this.in_supplier,
+                in_supplier_location: this.in_supplier_location,
+                record_status: 'A'
+            });
+            if (saveRegistration) {
+                this.messageService.add({ severity: 'success', summary: 'Item', detail: `Item is saved successfully ` });
+                this.cancel();
+            } else {
+            }
+        } catch (e) {
+            this.messageService.add({ severity: 'success', summary: 'Item', detail: `Unable to process your request, try again!!!` });
+
+            this._lodSrvce.hide();
+        }
+        this._lodSrvce.hide();
+    }
+
+    cancel() {
+        this.in_item_id = null;
+        this.in_item_name = '';
+        this.in_item_category_id = '';
+        this.in_stock_level = '';
+        this.in_measurement_unit = '';
+        this.in_supplier = '';
+        this.in_supplier_location = '';
+    }
 
     calculateAge(dob: Date): any {
         const today = new Date();
@@ -483,33 +451,11 @@ export class Inventory {
         } else {
             console.log(this.filteredPatients);
             let parsePatients = JSON.parse(this.filteredPatients);
-            this.inventoryItemsInfo = parsePatients.filter((inventoryItems: any) => inventoryItems.admissionType === this.value);
+            this.inventoryItemsInfo = parsePatients.filter((inventoryItems: any) => inventoryItems.in_item_category_id === this.value);
         }
     }
 
     isFormDisabled(): boolean {
-        return !(
-            this.firstname &&
-            this.lastname &&
-            this.address &&
-            this.state &&
-            this.zip &&
-            this.admissionType &&
-            this.dob &&
-            this.phoneNumber &&
-            this.email &&
-            this.emergencyContactName &&
-            this.emergencyContactNumber &&
-            this.gender &&
-            this.bloodGroup &&
-            this.mrn &&
-            this.occupation &&
-            this.insuranceProvider &&
-            this.insuranceNumber &&
-            this.admittingDoctor &&
-            this.roomNumber &&
-            this.visitingDepartment &&
-            this.appointmentTime
-        );
+        return !(this.in_item_name && this.in_supplier_location && this.in_item_category_id && this.in_stock_level && this.in_measurement_unit && this.in_supplier);
     }
 }
