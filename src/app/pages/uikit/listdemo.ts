@@ -21,6 +21,9 @@ import * as _ from 'lodash';
 import { MessageService } from 'primeng/api';
 import { Toast, ToastModule } from 'primeng/toast';
 import { DatePickerModule } from 'primeng/datepicker';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { NgModel } from '@angular/forms';
+
 interface State {
     name: string;
     code: string;
@@ -34,7 +37,27 @@ interface Patient {
 @Component({
     selector: 'app-list-demo',
     standalone: true,
-    imports: [CommonModule, InputTextModule, ChipModule, FluidModule, ButtonModule, DatePickerModule, SelectModule, FormsModule, TextareaModule, RadioButtonModule, SelectButtonModule, CalendarModule, InputMaskModule, TableModule, TabsModule, TagModule, ToastModule],
+    imports: [
+        CommonModule,
+        FormsModule,
+        // NgModel,
+        InputTextModule,
+        ChipModule,
+        FluidModule,
+        ButtonModule,
+        DatePickerModule,
+        SelectModule,
+        TextareaModule,
+        RadioButtonModule,
+        SelectButtonModule,
+        CalendarModule,
+        InputMaskModule,
+        TableModule,
+        TabsModule,
+        TagModule,
+        ToastModule,
+        KeyFilterModule
+    ],
     styles: `
         ::ng-deep {
             .p-orderlist-list-container {
@@ -56,12 +79,12 @@ interface Patient {
                             <p-table [value]="employeeInfo" stripedRows>
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th style="min-width:20rem">Employee</th>       
-                                        <th style="min-width:20rem">Email</th>       
-                                        <th style="min-width:20rem">Contact No.</th>       
-                                        <th style="min-width:20rem">Designation</th>       
-                                        <th style="min-width:20rem">Department</th>       
-                                        <th style="min-width:20rem">Role</th>       
+                                        <th style="min-width:20rem">Employee</th>
+                                        <th style="min-width:20rem">Email</th>
+                                        <th style="min-width:20rem">Contact No.</th>
+                                        <th style="min-width:20rem">Designation</th>
+                                        <th style="min-width:20rem">Department</th>
+                                        <th style="min-width:20rem">Role</th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-empData>
@@ -103,11 +126,10 @@ interface Patient {
                                         <td>
                                             {{ empData.p_department }}
                                         </td>
-                                    
+
                                         <td>
                                             {{ empData.p_role }}
                                         </td>
-                                       
                                     </tr>
                                 </ng-template>
                                 <ng-template #emptymessage>
@@ -128,22 +150,40 @@ interface Patient {
                                             <input pInputText id="firstname2" type="text" [(ngModel)]="employee.p_empname" />
                                         </div>
                                     </div>
-                                    <div class="flex flex-col md:flex-row gap-3">
-                                        <div class="flex flex-wrap gap-2">
-                                            <label for="p_dob">Date Of Birth</label>
-                                                <p-datepicker id="p_dob" [(ngModel)]="employee.p_dob" 
-                                                [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" baseZIndex="9999999999999"/>
 
+                                    <div class="flex flex-col md:flex-row gap-4">
+                                        <!-- Left: Inline Datepicker -->
+                                        <div class="flex-1 flex flex-col gap-2">
+                                            <label for="p_dob">Date Of Birth</label>
+                                            <p-datepicker
+                                                id="p_dob"
+                                                [(ngModel)]="employee.p_dob"
+                                                [readonlyInput]="true"
+                                                [iconDisplay]="'input'"
+                                                [showIcon]="true"
+                                                [defaultDate]="defaultDate"
+                                                inputId="icondisplay"
+                                                baseZIndex="9999999999999"
+                                                [inline]="true"
+                                                [maxDate]="maxDate"
+                                                styleClass="w-full"
+                                            />
                                         </div>
-                                           <div class="flex flex-wrap gap-2">
-                                        <label for="Email">Email</label>
-                                        <input pInputText id="Email" type="email" [(ngModel)]="employee.p_email" />
+
+                                        <!-- Right: Email + Contact -->
+                                        <div class="flex-1 flex flex-col gap-3">
+                                            <div class="flex flex-col gap-2">
+                                                <label for="Email">Email</label>
+                                                <input pInputText id="Email" type="email" [(ngModel)]="employee.p_email" />
+                                            </div>
+                                            <div class="flex flex-col gap-2">
+                                                <label for="Contact">Contact No.</label>
+
+                                                <input pInputText id="Contact" type="text" maxlength="10" [(ngModel)]="employee.p_mobile_no" />
+                                            </div>
+                                        </div>
                                     </div>
-                                      <div class="flex flex-wrap gap-2">
-                                        <label for="Contact">Contact No.</label>
-                                        <input pInputText id="Contact" type="text" [(ngModel)]="employee.p_mobile_no" />
-                                    </div>
-                                    </div>
+
                                     <div class="flex gap-4 justify-conent-between">
                                         <button pButton label="Create Employee" class="p-button-sm" (click)="saveEmp()" [disabled]="isFormDisabled()"></button>
                                         <button pButton label="Cancel" (click)="cancel()" [disabled]="isFormDisabled()" class="p-button-sm p-button-secondary ml-2"></button>
@@ -160,7 +200,9 @@ interface Patient {
 })
 export class ListDemo implements OnInit {
     public _productService = inject(ProductService);
-    public employee = {
+    maxDate: any = null;
+    defaultDate: any = null;
+    public employee: any = {
         p_employee_id: null,
         p_empname: null,
         p_designation_id: null,
@@ -236,6 +278,11 @@ export class ListDemo implements OnInit {
     public _lodSrvce = inject(LoaderService);
     private messageService = inject(MessageService);
 
+    constructor() {
+        let today = new Date();
+        this.maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+        this.defaultDate = new Date(today.getFullYear() - 18, 0, 1);
+    }
     async ngOnInit() {
         this._lodSrvce.show();
         this.employeeInfo = [];
@@ -328,4 +375,3 @@ export class ListDemo implements OnInit {
         return !(this.employee.p_empname && this.employee.p_dob && this.employee.p_email && this.employee.p_mobile_no);
     }
 }
-

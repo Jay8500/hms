@@ -22,10 +22,10 @@ import { FooterWidget } from './components/footerwidget';
                 <!-- <hero-widget /> -->
                 <features-widget />
                 <!-- <highlights-widget /> -->
-            
+
                 <footer-widget />
             </div>
         </div>
     `
 })
-export class Landing { }
+export class Landing {}

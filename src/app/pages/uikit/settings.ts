@@ -77,7 +77,7 @@ interface Patient {
                 </p-tablist>
                 <p-tabpanels>
                     <p-tabpanel value="0">
-                        <p-message>Any Permission changes will be reflected for the users at their relogin</p-message>
+                        <!-- <p-message>Any Permission changes will be reflected for the users at their relogin</p-message> -->
                         <div class="main-card mt-2">
                             <p-select
                                 class="flex mb-2"

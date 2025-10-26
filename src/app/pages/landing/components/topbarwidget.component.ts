@@ -8,7 +8,7 @@ import { ButtonModule } from 'primeng/button';
     selector: 'topbar-widget',
     imports: [RouterModule, StyleClassModule, ButtonModule, RippleModule],
     template: `<a class="flex items-center" href="#">
-            <img src="../assets/product_images/cureTrack.png" alt="CureTrack Logo" class="h-28 mb-2" />
+            <img src="../assets/product_images/hs.png" alt="CureTrack Logo" class="h-28 mb-2" />
             <!-- <span class="text-surface-900 dark:text-surface-0 font-medium text-2xl leading-normal mr-20"> CureTrack </span> -->
         </a>
         <a pButton [text]="true" severity="secondary" [rounded]="true" pRipple class="lg:!hidden" pStyleClass="@next" enterClass="hidden" leaveToClass="hidden" [hideOnOutsideClick]="true">

@@ -9,7 +9,7 @@ import { Router, RouterModule } from '@angular/router';
             <div class="grid grid-cols-12 gap-4">
                 <div class="col-span-12 md:col-span-2">
                     <a class="flex items-center" href="#">
-                        <img src="../assets/product_images/cureTrack.png" alt="CureTrack Logo" class="h-28 mb-2" />
+                        <img src="../assets/product_images/hs.png" alt="CureTrack Logo" class="h-28 mb-2" />
                         <!-- <span class="text-surface-900 dark:text-surface-0 font-medium text-2xl leading-normal mr-20"> CureTrack </span> -->
                     </a>
                 </div>
