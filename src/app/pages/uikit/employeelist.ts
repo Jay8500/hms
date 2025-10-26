@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FluidModule } from 'primeng/fluid';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
@@ -65,7 +65,7 @@ interface Patient {
             }
         }
     `,
-    providers: [ProductService, MessageService],
+    providers: [ProductService, MessageService, DatePipe],
     template: `
         <div class="card my-height">
             <p-tabs value="0">
@@ -75,28 +75,29 @@ interface Patient {
                 </p-tablist>
                 <p-tabpanels>
                     <p-tabpanel value="0">
-                        <div style="height: 441px; overflow-y: auto;">
-                            <p-table [value]="employeeInfo" stripedRows>
-                                <ng-template pTemplate="header">
-                                    <tr>
-                                        <th style="min-width:20rem">Employee</th>
-                                        <th style="min-width:20rem">Email</th>
-                                        <th style="min-width:20rem">Contact No.</th>
-                                        <th style="min-width:20rem">Designation</th>
-                                        <th style="min-width:20rem">Department</th>
-                                        <th style="min-width:20rem">Role</th>
-                                    </tr>
-                                </ng-template>
-                                <ng-template pTemplate="body" let-empData>
-                                    <tr>
-                                        <td>
-                                            <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
-                                                <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
-                                                    {{ empData.p_empname.slice(0, 1) }}
-                                                </span>
-                                                <span class="ml-2 font-medium"> {{ empData.p_empname }} </span>
-                                            </p-chip>
-                                            <!-- <div style="margin-left:15px;margin-top:3px" class="flex flex-row">
+                        <!-- <div style="height: 441px; overflow-y: auto;"> -->
+                        <!--  -->
+                        <p-table [value]="employeeInfo" stripedRows [scrollable]="true" scrollHeight="356px" [tableStyle]="{ 'min-width': '10rem' }">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th style="min-width:20rem">Employee</th>
+                                    <th style="min-width:20rem">Email</th>
+                                    <th style="min-width:20rem">Contact No.</th>
+                                    <th style="min-width:20rem">Designation</th>
+                                    <th style="min-width:20rem">Department</th>
+                                    <th style="min-width:20rem">Role</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-empData>
+                                <tr>
+                                    <td>
+                                        <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
+                                            <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
+                                                {{ empData.p_empname.slice(0, 1) }}
+                                            </span>
+                                            <span class="ml-2 font-medium"> {{ empData.p_empname }} </span>
+                                        </p-chip>
+                                        <!-- <div style="margin-left:15px;margin-top:3px" class="flex flex-row">
                                             <div class="flex">
                                                 <p-tag [value]="empData.gender" [severity]="empData.gender == 'Male' ? 'success' : 'danger'"></p-tag>
                                             </div>
@@ -108,37 +109,37 @@ interface Patient {
                                             </div>
                                         </div> -->
 
-                                            <!-- <p-tag [value]="empData.gender" [severity]="empData.gender == 'Male' ? 'success' : 'danger'"></p-tag>
+                                        <!-- <p-tag [value]="empData.gender" [severity]="empData.gender == 'Male' ? 'success' : 'danger'"></p-tag>
                                         <div class="flex flex-row justify-content-between font-semibold text-sm mt-1 ml-2">
                                             {{ empData.dob | date: 'dd MMM yyyy' }}
                                         </div>
                                         {{ empData.dobText }} -->
-                                        </td>
-                                        <td class="text-right">
-                                            {{ empData.p_email }}
-                                        </td>
-                                        <td>
-                                            {{ empData.p_mobile_no }}
-                                        </td>
-                                        <td>
-                                            {{ empData.p_designation }}
-                                        </td>
-                                        <td>
-                                            {{ empData.p_department }}
-                                        </td>
+                                    </td>
+                                    <td class="text-right">
+                                        {{ empData.p_email }}
+                                    </td>
+                                    <td>
+                                        {{ empData.p_mobile_no }}
+                                    </td>
+                                    <td>
+                                        {{ empData.p_designation }}
+                                    </td>
+                                    <td>
+                                        {{ empData.p_department }}
+                                    </td>
 
-                                        <td>
-                                            {{ empData.p_role }}
-                                        </td>
-                                    </tr>
-                                </ng-template>
-                                <ng-template #emptymessage>
-                                    <tr>
-                                        <td colspan="6" class="text-center">No Employees found.</td>
-                                    </tr>
-                                </ng-template>
-                            </p-table>
-                        </div>
+                                    <td>
+                                        {{ empData.p_role }}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template #emptymessage>
+                                <tr>
+                                    <td colspan="6" class="text-center">No Employees found.</td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                        <!-- </div> -->
                     </p-tabpanel>
                     <p-tabpanel value="1">
                         <p-fluid>
@@ -182,6 +183,20 @@ interface Patient {
                                                 <input pInputText id="Contact" type="text" maxlength="10" [(ngModel)]="employee.p_mobile_no" />
                                             </div>
                                         </div>
+                                        <div class="flex-1 flex flex-col gap-3">
+                                            <div class="flex flex-col gap-2">
+                                                <label for="Email">Departments</label>
+                                                <p-select id="bloodGroup" [(ngModel)]="employee.p_department_id" [options]="departmentList" placeholder="Select Departments" optionLabel="name" optionValue="depsrtment_id" class="w-full"></p-select>
+                                            </div>
+                                            <div class="flex flex-col gap-2">
+                                                <label for="Contact">Designation</label>
+                                                <p-select id="bloodGroup" [(ngModel)]="employee.p_designation_id" [options]="desigList" placeholder="Select Designation" optionLabel="name" optionValue="designation_id" class="w-full"></p-select>
+                                            </div>
+                                            <div class="flex flex-col gap-2">
+                                                <label for="Contact">Role</label>
+                                                <p-select id="bloodGroup" [(ngModel)]="employee.p_role_id" [options]="roleList" placeholder="Select Role" optionLabel="name" optionValue="id" class="w-full"></p-select>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="flex gap-4 justify-conent-between">
@@ -201,6 +216,9 @@ interface Patient {
 export class EmployeeList implements OnInit {
     public _productService = inject(ProductService);
     maxDate: any = null;
+    desigList: any[] = [];
+    departmentList: any[] = [];
+    roleList: any[] = [];
     defaultDate: any = null;
     public employee: any = {
         p_employee_id: null,
@@ -286,41 +304,54 @@ export class EmployeeList implements OnInit {
     async ngOnInit() {
         this._lodSrvce.show();
         this.employeeInfo = [];
+        this.desigList = await this.logSrvc.getAllDesignations(); // BLOOD GROUP LIST
+        this.departmentList = await this.logSrvc.getAllDepartments(); // OCCUPATIONS LIST
+        this.roleList = await this.logSrvc.getRoles(); // OCCUPATIONS LIST
         try {
-            let empData = await this.logSrvc.getAllEmployees();
-            if (empData.length > 0) {
-                _.forEach(empData, (itm: any) => {
-                    let emp = {
-                        p_employee_id: itm.p_employee_id,
-                        p_empname: itm.p_empname,
-                        p_designation: itm.p_designation,
-                        p_department: itm.p_department,
-                        p_dob: itm.p_dob,
-                        p_email: itm.p_email,
-                        p_mobile_no: itm.p_mobile_no,
-                        p_role: itm.p_role
-                    };
-                    this.employeeInfo.push(emp);
-                });
-            }
+            await this.getAllEmployees();
         } catch (e) {
             this._lodSrvce.hide();
         }
         this._lodSrvce.hide();
     }
 
+    async getAllEmployees() {
+        try {
+            let empData = await this.logSrvc.getAllEmployees();
+            if (empData.length > 0) {
+                _.forEach(empData, (itm: any) => {
+                    let emp = {
+                        p_employee_id: itm.empid,
+                        p_empname: itm.empname,
+                        p_designation: itm.designation_name,
+                        p_department: itm.department_name,
+                        p_dob: itm.ob,
+                        p_email: itm.email,
+                        p_mobile_no: itm.mobile_no,
+                        p_role: itm.role_name
+                    };
+                    this.employeeInfo.push(emp);
+                });
+            }
+        } catch (e) {}
+    }
+    public datePipe = inject(DatePipe);
     async saveEmp() {
         try {
             this._lodSrvce.show();
-            const saveEmp = await this.logSrvc.saveEmployee(this.employee);
+            let getFormData = JSON.parse(JSON.stringify(this.employee));
+            let dobConvertTosString = this.datePipe.transform(new Date(getFormData['p_dob']), 'dd MMM YYYY');
+            getFormData['p_dob'] = dobConvertTosString;
+
+            const saveEmp = await this.logSrvc.saveEmployee(getFormData);
             if (saveEmp) {
                 this.messageService.add({ severity: 'success', summary: 'Employee', detail: `Employee is saved successfully ` });
                 this.cancel();
+                await this.getAllEmployees();
             } else {
             }
         } catch (e) {
             this.messageService.add({ severity: 'success', summary: 'Item', detail: `Unable to process your request, try again!!!` });
-
             this._lodSrvce.hide();
         }
         this._lodSrvce.hide();

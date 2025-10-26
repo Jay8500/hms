@@ -192,9 +192,9 @@ export class LoginserviceService {
 
     async getAllEmployees() {
         let items: any = null;
-        // let { data, error } = await this.supabase.rpc('get_all_inventory');
-        // if (error) items = error;
-        // else items = data;
+        let { data, error } = await this.supabase.rpc('get_all_employees');
+        if (error) items = error;
+        else items = data;
         return items;
     }
 
@@ -359,5 +359,4 @@ export class LoginserviceService {
         else getData = data;
         return getData;
     }
-
 }
