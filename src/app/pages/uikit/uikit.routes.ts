@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { ButtonDemo } from './buttondemo';
 import { FormLayoutDemo } from './formlayoutdemo';
-import { ListDemo } from './listdemo';
+import { EmployeeList } from './employeelist';
 // import { TableDemo } from './tabledemo';
 import { Inventory } from './inventory';
 import { settings } from './settings';
@@ -9,6 +9,7 @@ import { AppointmentWorkflowComponent } from './appointment';
 import { BillingComponent } from './billing';
 import { PatientAssessmentComponent } from './assessement';
 import { ConsultationsComponent } from './consultations';
+import { TimelineDemo } from './timelinedemo';
 
 //  data: { breadcrumb: 'Form Layout' },
 export default [
@@ -17,9 +18,9 @@ export default [
     { path: 'billing', component: BillingComponent },
     { path: 'assessment', component: PatientAssessmentComponent },
     // { path: 'ip-admissions', data: { breadcrumb: 'Input' }, component: InputDemo },
-    { path: 'employeelist', data: { breadcrumb: 'List' }, component: ListDemo },
+    { path: 'employeelist', data: { breadcrumb: 'List' }, component: EmployeeList },
     { path: 'inventory', data: { breadcrumb: 'Inventory' }, component: Inventory },
-    { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
+    // { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'settings', data: { breadcrumb: 'Button' }, component: settings },
     { path: 'consultations', data: { breadcrumb: 'Consulations' }, component: ConsultationsComponent },
     // { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
@@ -28,7 +29,7 @@ export default [
     // { path: 'message', data: { breadcrumb: 'Message' }, component: MessagesDemo },
     // { path: 'misc', data: { breadcrumb: 'Misc' }, component: MiscDemo },
     // { path: 'panel', data: { breadcrumb: 'Panel' }, component: PanelsDemo },
-    // { path: 'timeline', data: { breadcrumb: 'Timeline' }, component: TimelineDemo },
+    { path: 'timeline', data: { breadcrumb: 'Timeline' }, component: TimelineDemo },
     // { path: 'table', data: { breadcrumb: 'Table' }, component: TableDemo },
     // { path: 'overlay', data: { breadcrumb: 'Overlay' }, component: OverlayDemo },
     // { path: 'tree', data: { breadcrumb: 'Tree' }, component: TreeDemo },

@@ -198,7 +198,7 @@ interface Patient {
         <p-toast />
     `
 })
-export class ListDemo implements OnInit {
+export class EmployeeList implements OnInit {
     public _productService = inject(ProductService);
     maxDate: any = null;
     defaultDate: any = null;
