@@ -20,23 +20,26 @@ import { NameInitialsPipe } from '../../name-initials.pipe';
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
                 <i class="pi pi-bars"></i>
             </button>
-             <a class="flex items-center" href="#">
-                        <img src="../assets/product_images/my.png" alt="CureTrack Logo" class="img-height" />
-                        <!-- <span class="text-surface-900 dark:text-surface-0 font-medium text-2xl leading-normal mr-20"> CureTrack </span> -->
-                    </a>
+            <a class="flex items-center" href="#">
+                <img src="../assets/product_images/my.png" alt="CureTrack Logo" class="img-height" />
+                <!-- <span class="text-surface-900 dark:text-surface-0 font-medium text-2xl leading-normal mr-20"> CureTrack </span> -->
+            </a>
         </div>
         <div class="layout-topbar-actions">
             <p-chip class="!py-0 !pl-0 !pr-2 cursor-pointer" (click)="menu.toggle($event)">
                 <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
                     {{ loginSer.getLocalKeys('username') | nameInitials }}
                 </span>
-                <span class="font-medium"> {{ loginSer.getLocalKeys('username') }} </span>
+                <span class="font-medium"> {{ loginSer.getLocalKeys('username') | uppercase }} </span>
             </p-chip>
             <p-menu #menu [model]="itemss" [popup]="true" />
         </div>
     </div>`,
-    styles: `.img-height{ height :65px !important }`
-
+    styles: `
+        .img-height {
+            height: 65px !important;
+        }
+    `
 })
 export class AppTopbar {
     items!: MenuItem[];
