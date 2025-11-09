@@ -23,6 +23,7 @@ import { Toast, ToastModule } from 'primeng/toast';
 import { DatePickerModule } from 'primeng/datepicker';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { NgModel } from '@angular/forms';
+import { NameInitialsPipe } from '../../name-initials.pipe';
 
 interface State {
     name: string;
@@ -56,7 +57,8 @@ interface Patient {
         TabsModule,
         TagModule,
         ToastModule,
-        KeyFilterModule
+        KeyFilterModule,
+        NameInitialsPipe
     ],
     styles: `
         ::ng-deep {
@@ -80,7 +82,8 @@ interface Patient {
                         <p-table [value]="employeeInfo" stripedRows [scrollable]="true" scrollHeight="356px" [tableStyle]="{ 'min-width': '10rem' }">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th style="min-width:20rem">Employee</th>
+                                    <th style="min-width:20rem">Employee Name</th>
+                                    <th style="min-width:20rem">User Name</th>
                                     <th style="min-width:20rem">Email</th>
                                     <th style="min-width:20rem">Contact No.</th>
                                     <th style="min-width:20rem">Designation</th>
@@ -93,9 +96,34 @@ interface Patient {
                                     <td>
                                         <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
                                             <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
-                                                {{ empData.p_empname.slice(0, 1) }}
+                                                {{ empData.p_empname | nameInitials }}
                                             </span>
                                             <span class="ml-2 font-medium"> {{ empData.p_empname }} </span>
+                                        </p-chip>
+                                        <!-- <div style="margin-left:15px;margin-top:3px" class="flex flex-row">
+                                            <div class="flex">
+                                                <p-tag [value]="empData.gender" [severity]="empData.gender == 'Male' ? 'success' : 'danger'"></p-tag>
+                                            </div>
+                                            <div class="flex font-semibold text-sm mt-1 ml-2">
+                                                <div>
+                                                    <div class="text-sm">{{ empData.dob | date: 'dd MMM yyyy' }}</div>
+                                                    <div class="text-xs">{{ empData.dobText }}</div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                        <!-- <p-tag [value]="empData.gender" [severity]="empData.gender == 'Male' ? 'success' : 'danger'"></p-tag>
+                                        <div class="flex flex-row justify-content-between font-semibold text-sm mt-1 ml-2">
+                                            {{ empData.dob | date: 'dd MMM yyyy' }}
+                                        </div>
+                                        {{ empData.dobText }} -->
+                                    </td>
+                                    <td>
+                                        <p-chip class="!py-0 !pl-0 !pr-4 mt-2">
+                                            <span class="bg-primary text-primary-contrast rounded-full w-8 h-8 flex items-center justify-center">
+                                                {{ empData.username | nameInitials }}
+                                            </span>
+                                            <span class="ml-2 font-medium"> {{ empData.username }} </span>
                                         </p-chip>
                                         <!-- <div style="margin-left:15px;margin-top:3px" class="flex flex-row">
                                             <div class="flex">
@@ -135,7 +163,7 @@ interface Patient {
                             </ng-template>
                             <ng-template #emptymessage>
                                 <tr>
-                                    <td colspan="6" class="text-center">No Employees found.</td>
+                                    <td colspan="7" class="text-center">No Employees found.</td>
                                 </tr>
                             </ng-template>
                         </p-table>
@@ -149,6 +177,10 @@ interface Patient {
                                         <div class="flex flex-wrap gap-2 w-full">
                                             <label for="firstname2">Employee Name</label>
                                             <input pInputText id="firstname2" type="text" [(ngModel)]="employee.p_empname" />
+                                        </div>
+                                        <div class="flex flex-wrap gap-2 w-full">
+                                            <label for="firstname2">User Name</label>
+                                            <input pInputText id="firstname2" type="text" [(ngModel)]="employee.p_username" />
                                         </div>
                                     </div>
 
@@ -186,15 +218,48 @@ interface Patient {
                                         <div class="flex-1 flex flex-col gap-3">
                                             <div class="flex flex-col gap-2">
                                                 <label for="Email">Departments</label>
-                                                <p-select id="bloodGroup" [(ngModel)]="employee.p_department_id" [options]="departmentList" placeholder="Select Departments" optionLabel="name" optionValue="depsrtment_id" class="w-full"></p-select>
+                                                <p-select
+                                                    id="bloodGroup"
+                                                    [filter]="true"
+                                                    filterBy="name"
+                                                    [showClear]="true"
+                                                    [(ngModel)]="employee.p_department_id"
+                                                    [options]="departmentList"
+                                                    placeholder="Select Departments"
+                                                    optionLabel="name"
+                                                    optionValue="depsrtment_id"
+                                                    class="w-full"
+                                                ></p-select>
                                             </div>
                                             <div class="flex flex-col gap-2">
                                                 <label for="Contact">Designation</label>
-                                                <p-select id="bloodGroup" [(ngModel)]="employee.p_designation_id" [options]="desigList" placeholder="Select Designation" optionLabel="name" optionValue="designation_id" class="w-full"></p-select>
+                                                <p-select
+                                                    id="bloodGroup"
+                                                    [filter]="true"
+                                                    filterBy="name"
+                                                    [showClear]="true"
+                                                    [(ngModel)]="employee.p_designation_id"
+                                                    [options]="desigList"
+                                                    placeholder="Select Designation"
+                                                    optionLabel="name"
+                                                    optionValue="designation_id"
+                                                    class="w-full"
+                                                ></p-select>
                                             </div>
                                             <div class="flex flex-col gap-2">
                                                 <label for="Contact">Role</label>
-                                                <p-select id="bloodGroup" [(ngModel)]="employee.p_role_id" [options]="roleList" placeholder="Select Role" optionLabel="name" optionValue="id" class="w-full"></p-select>
+                                                <p-select
+                                                    id="bloodGroup"
+                                                    [filter]="true"
+                                                    filterBy="name"
+                                                    [showClear]="true"
+                                                    [(ngModel)]="employee.p_role_id"
+                                                    [options]="roleList"
+                                                    placeholder="Select Role"
+                                                    optionLabel="name"
+                                                    optionValue="id"
+                                                    class="w-full"
+                                                ></p-select>
                                             </div>
                                         </div>
                                     </div>
@@ -223,6 +288,7 @@ export class EmployeeList implements OnInit {
     public employee: any = {
         p_employee_id: null,
         p_empname: null,
+        p_username: null,
         p_designation_id: null,
         p_department_id: null,
         p_dob: null,
@@ -322,7 +388,8 @@ export class EmployeeList implements OnInit {
                 _.forEach(empData, (itm: any) => {
                     let emp = {
                         p_employee_id: itm.empid,
-                        p_empname: itm.empname,
+                        p_empname: itm.empname.toUpperCase(),
+                        username: itm.username.toUpperCase(),
                         p_designation: itm.designation_name,
                         p_department: itm.department_name,
                         p_dob: itm.ob,

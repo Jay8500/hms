@@ -348,6 +348,7 @@ export class LoginserviceService {
         let { data, error } = await this.supabase.rpc('add_or_edit_employee', {
             p_employee_id: ctrl.p_employee_id,
             p_empname: ctrl.p_empname,
+            p_username: ctrl.p_username,
             p_designation_id: ctrl.p_designation_id,
             p_department_id: ctrl.p_department_id,
             p_dob: ctrl.p_dob,
